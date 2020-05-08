@@ -154,7 +154,7 @@ class DynamicSimpleCompilationTest(PerformanceTest):
         template = Cheetah.Template.Template.compile(template, 
             keepRefToGeneratedCode=False)
         template = template()
-        template = unicode(template)
+        template = str(template)
 
 
 class FilterTest(PerformanceTest):
@@ -173,7 +173,7 @@ class FilterTest(PerformanceTest):
         self.template = template()
 
     def performanceSample(self):
-        value = unicode(self.template)
+        value = str(self.template)
 
 
 class LongCompileTest(PerformanceTest):

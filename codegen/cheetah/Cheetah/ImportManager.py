@@ -125,7 +125,7 @@ def pathIsDir(pathname):
         s = _os_stat(pathname)
     except OSError:
         return None
-    return (s[0] & 0170000) == 0040000
+    return (s[0] & 0o170000) == 0o040000
 
 def getDescr(fnm):
     ext = getPathExt(fnm)
@@ -198,7 +198,7 @@ class DirOwner(Owner):
                 try:
                     co = compile(open(py[0], 'r').read()+'\n', py[0], 'exec')
                     break
-                except SyntaxError, e:
+                except SyntaxError as e:
                     print("Invalid syntax in %s" % py[0])
                     print(e.args)
                     raise
@@ -321,7 +321,7 @@ class PathImportDirector(ImportDirector):
     def getmod(self, nm):
         mod = None
         for thing in self.path:
-            if isinstance(thing, basestring):
+            if isinstance(thing, str):
                 owner = self._shadowPath.get(thing, -1)
                 if owner == -1:
                     owner = self._shadowPath[thing] = self._makeOwner(thing)
@@ -378,9 +378,9 @@ class ImportManager:
             self._get_ident = thread.get_ident
             
     def install(self):
-        import __builtin__
-        __builtin__.__import__ = self.importHook
-        __builtin__.reload = self.reloadHook
+        import builtins
+        builtins.__import__ = self.importHook
+        builtins.reload = self.reloadHook
         
     def importHook(self, name, globals=None, locals=None, fromlist=None, level=-1):
         '''

@@ -17,7 +17,7 @@ import os
 import getopt
 import os.path
 try:
-    from cPickle import load
+    from pickle import load
 except ImportError:
     from pickle import load
 
@@ -51,7 +51,7 @@ class CmdLineIface:
                                             'pickle=',
                                             ])
 
-        except getopt.GetoptError, v:
+        except getopt.GetoptError as v:
             # print help information and exit:
             print(v)
             print(self.usage())

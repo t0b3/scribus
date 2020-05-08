@@ -13,7 +13,7 @@ def findFramework(path, name = None):
 	elif os.path.basename(path) == name + ".framework":
 		return path
 	elif len(os.path.dirname(path)) >= len(path):
-		print "MachO.findFramework: Oops '" + path + "', '" + name + "'"
+		print("MachO.findFramework: Oops '" + path + "', '" + name + "'")
 		return None
 	else:
 		return findFramework(os.path.dirname(path), name)
@@ -89,7 +89,7 @@ def findExecutables(bundleDir):
 			m = pat.match(f.readline())
 			if m != None:
 				result.append(Executable(p, m.group(1)))
-				print "found " + m.group(1) + ": " + n
+				print("found " + m.group(1) + ": " + n)
 			f.close()
 	return result
 

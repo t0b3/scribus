@@ -6,7 +6,7 @@ from PyQt4.QtCore import QObject, Qt
 from PyQt4.QtGui import QTextCursor, qApp, QApplication, QPlainTextEdit
 
 
-from highlighter import PythonHighlighter,  QtScriptHighlighter
+from .highlighter import PythonHighlighter,  QtScriptHighlighter
 
 
 
@@ -69,7 +69,7 @@ class ConsoleWidget(OutputWidget):
         self.history_index = 0
         self.history = [""]
         self.tab_state = -1
-        print self.ps1,
+        print(self.ps1, end=' ')
 
 
     def focusInEvent(self, event):
@@ -93,7 +93,7 @@ class ConsoleWidget(OutputWidget):
         key = event.key()
         modifiers = event.modifiers()
         l = len(self.ps1)
-        line = unicode(self.document().end().previous().text())
+        line = str(self.document().end().previous().text())
         ps1orps2, line = line[:l-1], line[l:]
 
         
@@ -104,40 +104,40 @@ class ConsoleWidget(OutputWidget):
             if self.history_index + 1 < len(self.history):
                 self.history_index += 1
             remove_line()
-            print
-            print ps1orps2, self.history[self.history_index],
+            print()
+            print(ps1orps2, self.history[self.history_index], end=' ')
         elif key == Qt.Key_Down:
             if self.history_index > 0:
                 self.history_index -= 1
             remove_line()
-            print
-            print ps1orps2, self.history[self.history_index],
+            print()
+            print(ps1orps2, self.history[self.history_index], end=' ')
         elif key == Qt.Key_Tab:
             if modifiers & Qt.ControlModifier:
-                print " " * 4,
+                print(" " * 4, end=' ')
             else:
                 self.tab_state += 1
                 remove_line()
-                print
-                print ps1orps2, 
-                print self.completer.complete(line, self.tab_state) or line,
+                print()
+                print(ps1orps2, end=' ') 
+                print(self.completer.complete(line, self.tab_state) or line, end=' ')
         elif key == Qt.Key_Backtab:
             if self.tab_state >= 0:
                 self.tab_state -= 1
             remove_line()
-            print
-            print ps1orps2, 
-            print self.completer.complete(line, self.tab_state) or line,
+            print()
+            print(ps1orps2, end=' ') 
+            print(self.completer.complete(line, self.tab_state) or line, end=' ')
         elif key in [Qt.Key_Backspace, Qt.Key_Left]:
             if self.textCursor().columnNumber()  > len(ps1orps2) + 1:
                 return OutputWidget.keyPressEvent(self, event)
         elif key == Qt.Key_Return:
             self.moveCursor(QTextCursor.EndOfLine,  QTextCursor.MoveAnchor)
-            print
+            print()
             if self.push(line):
-                print self.ps2,
+                print(self.ps2, end=' ')
             else:
-                print self.ps1,
+                print(self.ps1, end=' ')
             if line and line != self.history[self.history_index]:
                 self.history.insert(1, line)
             self.history_index = 0
@@ -161,7 +161,7 @@ class PythonInterpreter(object):
                 locals = self.locals
         code = compile(source, self.name, "exec")
         try:
-                exec code in locals
+                exec(code, locals)
         except:
                 self.showtraceback()
         try:
@@ -183,7 +183,7 @@ class PythonInterpreter(object):
         try:
             code = compile(line, self.name, "single")
             self.lines = []
-        except SyntaxError, why:
+        except SyntaxError as why:
             if why[0] == "unexpected EOF while parsing":
                 self.lines.append(line)
                 return 1 # want more!
@@ -193,7 +193,7 @@ class PythonInterpreter(object):
             self.showtraceback()
         else:
             try:
-                exec code in self.locals
+                exec(code, self.locals)
             except:
                 self.showtraceback()
             try:
@@ -205,13 +205,13 @@ class PythonInterpreter(object):
 
     def showtraceback(self):
         self.lines = []
-        if sys.exc_type == SyntaxError: # and len(sys.exc_value) == 2:
-            print "  File \"%s\", line %d" % (self.name, sys.exc_value[1][1])
-            print " " * (sys.exc_value[1][2] + 2) + "^"
-            print str(sys.exc_type) + ":", sys.exc_value[0]
+        if sys.exc_info()[0] == SyntaxError: # and len(sys.exc_value) == 2:
+            print("  File \"%s\", line %d" % (self.name, sys.exc_value[1][1]))
+            print(" " * (sys.exc_value[1][2] + 2) + "^")
+            print(str(sys.exc_info()[0]) + ":", sys.exc_value[0])
         else:
-            traceback.print_tb(sys.exc_traceback, None)
-            print sys.exc_type.__name__ + ":", sys.exc_value
+            traceback.print_tb(sys.exc_info()[2], None)
+            print(sys.exc_type.__name__ + ":", sys.exc_info()[1])
 
 
 
@@ -236,11 +236,11 @@ class PythonCompleter(object):
 
 
     def global_matches(self, text):
-        import keyword, __builtin__
+        import keyword, builtins
         matches = []
         n = len(text)
         for list in [keyword.kwlist,
-                     __builtin__.__dict__,
+                     builtins.__dict__,
                      self.namespace]:
             for word in list:
                 if word[:n] == text and word != "__builtins__":
@@ -338,12 +338,12 @@ class QtScriptInterpreter(object):
         except: pass
         if engine.hasUncaughtException():
             bt = engine.uncaughtExceptionBacktrace()
-            print "Traceback:"
-            print "\n".join(["  %s" % l for l in list(bt)])
-            print engine.uncaughtException().toString()
+            print("Traceback:")
+            print("\n".join(["  %s" % l for l in list(bt)]))
+            print(engine.uncaughtException().toString())
         else:
             if not result.isUndefined():
-                print result.toString()
+                print(result.toString())
         
 
     def push(self, line):
@@ -455,7 +455,7 @@ class QtScriptCompleter(object):
         it = QScriptValueIterator(self.engine.globalObject())
         while it.hasNext():
             yield str(it.name())
-            it.next()
+            next(it)
 
 
     def global_matches(self, text):
@@ -481,8 +481,8 @@ class QtScriptConsole(ConsoleWidget):
         namespace = namespace or {}
         def console_print(context, engine):
             for i in range(context.argumentCount()):
-                print context.argument(i).toString(),
-            print
+                print(context.argument(i).toString(), end=' ')
+            print()
             return QScriptValue()
         def dir_context(context, engine):
             if context.argumentCount() == 0:
@@ -492,7 +492,7 @@ class QtScriptConsole(ConsoleWidget):
             l = []
             it = QScriptValueIterator(obj)
             while it.hasNext():
-                it.next()
+                next(it)
                 l.append(str(it.name()))
             return QScriptValue(engine, repr(l))
         namespace["print"] = console_print

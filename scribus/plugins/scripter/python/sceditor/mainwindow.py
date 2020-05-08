@@ -1,9 +1,9 @@
 from PyQt4.QtCore import pyqtSignature, Qt
 from PyQt4.QtGui import QMainWindow, QSplitter, QTabWidget, QApplication, QFileDialog, QMessageBox, QCloseEvent
 
-from widget import PythonEditorWidget,  QtScriptEditorWidget, SaveDialog
-from console import PythonConsole, QtScriptConsole
-from mainwindow_ui import Ui_ScriptEditor
+from .widget import PythonEditorWidget,  QtScriptEditorWidget, SaveDialog
+from .console import PythonConsole, QtScriptConsole
+from .mainwindow_ui import Ui_ScriptEditor
 
 
 import traceback
@@ -191,8 +191,8 @@ class EditorMainWindow(QMainWindow):
             else:
                 namespace = {}
             try:
-                exec code in namespace
-            except Exception, e:
+                exec(code, namespace)
+            except Exception as e:
                 traceback.print_exc()
             try:
                 Scripter.activeWindow.redraw = True

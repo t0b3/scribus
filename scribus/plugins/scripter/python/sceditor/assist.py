@@ -98,7 +98,7 @@ class AutoComplete(PopupWidget):
         completition = self.items[self.list.currentRow()].value
         cursor = self.textedit.textCursor()
         col = cursor.columnNumber()
-        line = unicode(cursor.block().text())
+        line = str(cursor.block().text())
         i = self.cursor_start_col
         while i > 0:
             #print `line[i:col]`
@@ -128,9 +128,9 @@ class AutoComplete(PopupWidget):
         if key in [Qt.Key_Right, Qt.Key_Enter, Qt.Key_Return]:
             text = ""
         cursor = self.textedit.textCursor()
-        line = unicode(cursor.block().text())
+        line = str(cursor.block().text())
         col = cursor.columnNumber()
-        prefix = line[self.cursor_start_col:col] + unicode(text)
+        prefix = line[self.cursor_start_col:col] + str(text)
 
         found = False
         for row, item in enumerate(self.items):

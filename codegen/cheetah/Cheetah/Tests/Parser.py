@@ -16,7 +16,7 @@ class ArgListTest(unittest.TestCase):
         self.al.add_argument('arg')
         expect = [('arg', None)]
 
-        self.assertEquals(expect, self.al.merge())
+        self.assertEqual(expect, self.al.merge())
 
     def test_merge2(self):
         '''
@@ -24,13 +24,13 @@ class ArgListTest(unittest.TestCase):
         '''
         self.al.add_argument('a')
         self.al.add_default('999')
-        self.al.next()
+        next(self.al)
         self.al.add_argument('b')
         self.al.add_default('444')
 
-        expect = [(u'a', u'999'), (u'b', u'444')]
+        expect = [('a', '999'), ('b', '444')]
 
-        self.assertEquals(expect, self.al.merge())
+        self.assertEqual(expect, self.al.merge())
 
 
 
@@ -42,7 +42,7 @@ class ArgListTest(unittest.TestCase):
         self.al.add_default("'This is my block'")
         expect = [('arg', "'This is my block'")]
 
-        self.assertEquals(expect, self.al.merge())
+        self.assertEqual(expect, self.al.merge())
 
 if __name__ == '__main__':
     unittest.main()

@@ -8,7 +8,7 @@ into simple hex:comment values map used in UnicodeSearch
 class
 Petr Vanek <petr@scribus.info>
 """
-print 'start stripping'
+print('start stripping')
 
 f = open('NamesList.txt', 'r')
 
@@ -21,12 +21,12 @@ for i in f:
 
 f.close()
 
-print 'writing output'
+print('writing output')
 
 f = open('unicodenameslist.txt', 'w')
 for i in out:
     f.write("%s:%s\n" % (i, out[i]))
 f.close()
 
-print 'done'
+print('done')
 

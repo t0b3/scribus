@@ -1529,7 +1529,7 @@ class ModuleCompiler(SettingsManager, GenUtils):
         
         if source and file:
             raise TypeError("Cannot compile from a source string AND file.")
-        elif isinstance(file, basestring): # it's a filename.
+        elif isinstance(file, str): # it's a filename.
             f = open(file) # Raises IOError.
             source = f.read()
             f.close()
@@ -1544,8 +1544,8 @@ class ModuleCompiler(SettingsManager, GenUtils):
             self._fileDirName, self._fileBaseName = os.path.split(self._filePath)
             self._fileBaseNameRoot, self._fileBaseNameExt = os.path.splitext(self._fileBaseName)
 
-        if not isinstance(source, basestring):
-            source = unicode(source)
+        if not isinstance(source, str):
+            source = str(source)
             # by converting to string here we allow objects such as other Templates
             # to be passed in
 
@@ -1565,14 +1565,14 @@ class ModuleCompiler(SettingsManager, GenUtils):
                 source = unicodeDirectiveRE.sub('', source)
                 if isinstance(source, str):
                     encoding = unicodeMatch.group(1) or 'ascii'
-                    source = unicode(source, encoding)
+                    source = str(source, encoding)
             elif encodingMatch:
                 encodings = encodingMatch.groups()
                 if len(encodings):
                     encoding = encodings[0]
                     source = source.decode(encoding)
             else:
-                source = unicode(source)
+                source = str(source)
 
         if source.find('#indent') != -1: #@@TR: undocumented hack
             source = indentize(source)

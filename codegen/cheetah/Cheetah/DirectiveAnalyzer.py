@@ -37,7 +37,7 @@ def analyze(source):
 def main_file(f):
     fd = open(f, 'r')
     try:
-        print u'>>> Analyzing %s' % f
+        print('>>> Analyzing %s' % f)
         calls = analyze(fd.read())
         return calls
     finally:
@@ -61,7 +61,7 @@ def main_dir(opts):
     for series in results:
         if not series:
             continue
-        for k, v in series.iteritems():
+        for k, v in series.items():
             try:
                 totals[k] += v
             except KeyError:

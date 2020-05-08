@@ -50,7 +50,7 @@ class Generator(object):
             nf.close()
         
     def generate(self, classDesc):
-        print classDesc.xmlName, ":", classDesc.datatype, classDesc.name, "=", classDesc.template
+        print(classDesc.xmlName, ":", classDesc.datatype, classDesc.name, "=", classDesc.template)
         name = classDesc.template
         if name not in self._templateSets:
             self._templateSets[name] = TemplateSet(self._templatedir, name)
@@ -83,12 +83,12 @@ class TemplateSet(object):
                 oldf.close()
             newcontent = str(t)
             if oldcontent != newcontent:
-                print "\t>>", fname
+                print("\t>>", fname)
                 s = open(fname, "w")
                 s.write(newcontent)
                 s.close()
             else:
-                print "\tskipping:", fname
+                print("\tskipping:", fname)
                 
         
 def Main(file, templdir, outdir):
@@ -115,7 +115,7 @@ if rngfile[-4:] == ".rnc":
     cwd = os.path.dirname(sys.argv[0])
     err = os.system("java -jar %s/../trang/trang.jar %s %s" % (cwd, rncfile, rngfile))
     if err != 0:
-        print "aborting"
+        print("aborting")
         exit(err)
         
 templatedir = os.path.dirname(rngfile)

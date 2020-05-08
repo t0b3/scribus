@@ -147,9 +147,9 @@ def main(files):
         d["args"] = "".join([html_entry_args_template % html_quote(a) for a in entry.args])
         d["description"] = html_quote(" ".join(entry.description))
         return html_entry_template % d
-    print html_template % {
+    print(html_template % {
         "entries": "".join([html_entry(entry)  for entry in find(files)])
-      }        
+      })        
 
 
 if __name__ == "__main__":

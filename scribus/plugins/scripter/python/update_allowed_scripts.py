@@ -20,7 +20,7 @@ def main(files):
             fn = os.path.join("autoload", name)
             if not os.path.isdir(fn):
                 allowed.append(hash_source(fn))
-    print "allowed_scripts = ",
+    print("allowed_scripts = ", end=' ')
     pprint.pprint(allowed)
     
     

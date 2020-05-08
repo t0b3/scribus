@@ -128,8 +128,8 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def updateRules(self):
     
         self.rules = []
-        self.rules += map(lambda s: (QtCore.QRegExp(r"\b"+s+r"\b"),
-                          self.keywordFormat), self.keywords)
+        self.rules += [(QtCore.QRegExp(r"\b"+s+r"\b"),
+                          self.keywordFormat) for s in self.keywords]
         
         self.rules.append((QtCore.QRegExp(r"\b[A-Za-z_]+\(.*\)"), self.callableFormat))
         self.rules.append((QtCore.QRegExp(r"\b__[a-z]+__\b"), self.magicFormat))
@@ -174,8 +174,8 @@ class QtScriptHighlighter(PythonHighlighter):
     def updateRules(self):
     
         self.rules = []
-        self.rules += map(lambda s: (QtCore.QRegExp(r"\b"+s+r"\b"),
-                          self.keywordFormat), self.keywords)
+        self.rules += [(QtCore.QRegExp(r"\b"+s+r"\b"),
+                          self.keywordFormat) for s in self.keywords]
 
         self.rules.append((QtCore.QRegExp(r"\b[A-Za-z_]+\(.*\)"), self.callableFormat))
         #self.rules.append((QtCore.QRegExp(r"\b__[a-z]+__\b"), self.magicFormat))

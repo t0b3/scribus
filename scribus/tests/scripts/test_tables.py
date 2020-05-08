@@ -363,24 +363,24 @@ def is_test_method(obj):
     return ismethod(obj) and obj.__name__.startswith('test_')
 
 if __name__ == '__main__':
-    print 'Running table tests...'
+    print('Running table tests...')
     tests = TableTests()
     methods = getmembers(tests, is_test_method)
     ntests = len(methods)
     nfailed = 0
     total_time = 0
     for testnr, (name, method) in enumerate(methods):
-        print '\t%i/%i: %s()%s' % (testnr + 1, ntests, name, '.' * (30 - len(name))),
+        print('\t%i/%i: %s()%s' % (testnr + 1, ntests, name, '.' * (30 - len(name))), end=' ')
         try:
             start_time = time()
             method()
             test_time = time() - start_time
             total_time += test_time
         except:
-            print 'Failed'
+            print('Failed')
             print_exc(file=stdout)
             nfailed += 1
         else:
-            print 'Passed  %.3f s' % round(test_time, 3)
-    print '%i%% passed, %i tests failed out of %i' % (int(round((float(ntests - nfailed)/ntests)*100)), nfailed, ntests)
-    print 'total test time = %.3f s' % round(total_time, 3)
+            print('Passed  %.3f s' % round(test_time, 3))
+    print('%i%% passed, %i tests failed out of %i' % (int(round((float(ntests - nfailed)/ntests)*100)), nfailed, ntests))
+    print('total test time = %.3f s' % round(total_time, 3))

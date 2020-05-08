@@ -37,10 +37,10 @@ class JBQ_UTF8_Test1(unittest.TestCase):
         other = otherT()
         t.other = other
 
-        t.v = u'Unicode String'
-        t.other.v = u'Unicode String'
+        t.v = 'Unicode String'
+        t.other.v = 'Unicode String'
 
-        assert unicode(t())
+        assert str(t())
 
 class JBQ_UTF8_Test2(unittest.TestCase):
     def runTest(self):
@@ -52,10 +52,10 @@ class JBQ_UTF8_Test2(unittest.TestCase):
         other = otherT()
         t.other = other
 
-        t.v = u'Unicode String with eacute é'
-        t.other.v = u'Unicode String'
+        t.v = 'Unicode String with eacute é'
+        t.other.v = 'Unicode String'
 
-        assert unicode(t())
+        assert str(t())
 
 
 class JBQ_UTF8_Test3(unittest.TestCase):
@@ -68,10 +68,10 @@ class JBQ_UTF8_Test3(unittest.TestCase):
         other = otherT()
         t.other = other
 
-        t.v = u'Unicode String with eacute é'
-        t.other.v = u'Unicode String and an eacute é'
+        t.v = 'Unicode String with eacute é'
+        t.other.v = 'Unicode String and an eacute é'
 
-        assert unicode(t())
+        assert str(t())
 
 class JBQ_UTF8_Test4(unittest.TestCase):
     def runTest(self):
@@ -80,16 +80,16 @@ class JBQ_UTF8_Test4(unittest.TestCase):
 
         t.v = 'Unicode String'
 
-        assert unicode(t())
+        assert str(t())
 
 class JBQ_UTF8_Test5(unittest.TestCase):
     def runTest(self):
         t = Template.compile(source="""#encoding utf-8
         Main file with |$v| and eacute in the template é""")
 
-        t.v = u'Unicode String'
+        t.v = 'Unicode String'
 
-        assert unicode(t())
+        assert str(t())
 
 def loadModule(moduleName, path=None):
     if path:
@@ -114,9 +114,9 @@ class JBQ_UTF8_Test6(unittest.TestCase):
         Main file with |$v| and eacute in the template é"""
         t = Template.compile(source=source)
 
-        t.v = u'Unicode String'
+        t.v = 'Unicode String'
 
-        assert unicode(t())
+        assert str(t())
 
 class JBQ_UTF8_Test7(CommandLineTest):
     def runTest(self):
@@ -125,9 +125,9 @@ class JBQ_UTF8_Test7(CommandLineTest):
         Main file with |$v| and eacute in the template é"""
 
         template = self.createAndCompile(source)
-        template.v = u'Unicode String'
+        template.v = 'Unicode String'
 
-        assert unicode(template())
+        assert str(template())
 
 class JBQ_UTF8_Test8(CommandLineTest):
     def testStaticCompile(self):
@@ -137,8 +137,8 @@ $someUnicodeString"""
 
         template = self.createAndCompile(source)()
 
-        a = unicode(template).encode("utf-8")
-        self.assertEquals("Bébé", a)
+        a = str(template).encode("utf-8")
+        self.assertEqual("Bébé", a)
 
     def testDynamicCompile(self):
         source = """#encoding utf-8
@@ -147,8 +147,8 @@ $someUnicodeString"""
 
         template = Template(source = source)
 
-        a = unicode(template).encode("utf-8")
-        self.assertEquals("Bébé", a)
+        a = str(template).encode("utf-8")
+        self.assertEqual("Bébé", a)
 
 class EncodeUnicodeCompatTest(unittest.TestCase):
     """
@@ -157,10 +157,10 @@ class EncodeUnicodeCompatTest(unittest.TestCase):
     """
     def runTest(self):
         t = Template("""Foo ${var}""", filter='EncodeUnicode')
-        t.var = u"Text with some non-ascii characters: åäö"
+        t.var = "Text with some non-ascii characters: åäö"
         
         rc = t.respond()
-        assert isinstance(rc, unicode), ('Template.respond() should return unicode', rc)
+        assert isinstance(rc, str), ('Template.respond() should return unicode', rc)
         
         rc = str(t)
         assert isinstance(rc, str), ('Template.__str__() should return a UTF-8 encoded string', rc)
@@ -172,7 +172,7 @@ class Unicode_in_SearchList_Test(CommandLineTest):
 
         template = self.createAndCompile(source)
         assert template and issubclass(template, Template)
-        template = template(searchList=[{'adjective' : u'neat'}])
+        template = template(searchList=[{'adjective' : 'neat'}])
         assert template.respond()
 
     def test_Thai(self):
@@ -181,7 +181,7 @@ class Unicode_in_SearchList_Test(CommandLineTest):
         template = self.createAndCompile(source)
         assert template and issubclass(template, Template)
         template = template(searchList=[{'foo' : 'bar', 
-            'adjective' : u'\u0e22\u0e34\u0e19\u0e14\u0e35\u0e15\u0e49\u0e2d\u0e19\u0e23\u0e31\u0e1a'}])
+            'adjective' : '\u0e22\u0e34\u0e19\u0e14\u0e35\u0e15\u0e49\u0e2d\u0e19\u0e23\u0e31\u0e1a'}])
         assert template.respond()
 
     def test_Thai_utf8(self):
@@ -219,7 +219,7 @@ class InlineSpanishTest(unittest.TestCase):
 
     def test_failure(self):
         """ Test a template lacking a proper #encoding tag """
-        self.failUnlessRaises(UnicodeDecodeError, Template, self.template, searchList=[{'header' : '',
+        self.assertRaises(UnicodeDecodeError, Template, self.template, searchList=[{'header' : '',
                         'nombre' : '', 'numpedidos_bodega' : '',
                         'numpedidos_noconf' : ''}])
 
@@ -229,7 +229,7 @@ class InlineSpanishTest(unittest.TestCase):
         template = Template(template, searchList=[{'header' : '',
                         'nombre' : '', 'numpedidos_bodega' : '',
                         'numpedidos_noconf' : ''}])
-        self.assertTrue(unicode(template))
+        self.assertTrue(str(template))
 
 
 

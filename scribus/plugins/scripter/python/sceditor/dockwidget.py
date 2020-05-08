@@ -11,7 +11,7 @@ from PyQt4.QtGui import (QAbstractButton, QMainWindow, QComboBox, QStyle,
                          QStyleOptionDockWidgetV2, QLayout)
 
 
-import dockwidget_icons
+from . import dockwidget_icons
 
 
 def hasFeature(dockwidget, feature):

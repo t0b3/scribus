@@ -80,4 +80,4 @@ if __name__ == "__main__":
     import safe_eval
     problems = safe_eval.checkCode(open("permitdlg.py").read())
     app = QApplication(sys.argv)
-    print ask("permitdlg.py", problems)
+    print(ask("permitdlg.py", problems))

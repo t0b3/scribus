@@ -25,7 +25,7 @@ def run_command(command):
 	return retcode
 
 if len(sys.argv) < 3:
-	print "usage: icons.py iconlist template"
+	print("usage: icons.py iconlist template")
 	sys.exit(1)
 	
 symbols = open(sys.argv[1]).readlines()
@@ -38,7 +38,7 @@ for symbol in symbols:
 	symbol = symbol.strip()
 	if symbol.startswith('#') or symbol == "":
 		continue
-	print "%5.1f%%   %-30s ." % (float(i)/len(symbols)*100, symbol),
+	print("%5.1f%%   %-30s ." % (float(i)/len(symbols)*100, symbol), end=' ')
 	source = template % symbol
 	#print source
 	f = open("tmp", 'w')
@@ -46,16 +46,16 @@ for symbol in symbols:
 	f.close()
 	
 	if run_command("latex --interaction batchmode tmp") != 0:
-		print "Error", cmd_output
+		print("Error", cmd_output)
 		continue
 	else:
-		print ".",
+		print(".", end=' ')
 		
 	filename = conv_filename(symbol)
 	if run_command("dvipng -D 200 -T tight -pp 1 -bg Transparent -o out/%s.png tmp.dvi" % filename) != 0:
-		print "Error", cmd_output
+		print("Error", cmd_output)
 		continue
 	else:
-		print "."
+		print(".")
 	xmlsample.write(r'<item value="%s"  image="%s.png" />' %(symbol, filename)+"\n")
 	

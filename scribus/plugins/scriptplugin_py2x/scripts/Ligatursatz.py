@@ -61,58 +61,58 @@ if ord("a") != 97:
 if len("a") != 1:
     raise RuntimeError("Source code encoding problem 02.")
 
-if ord(u"\xE4") != 0xE4:
+if ord("\xE4") != 0xE4:
     raise RuntimeError("Source code encoding problem 03.")
 
-if len(u"\xE4") != 1:
+if len("\xE4") != 1:
     raise RuntimeError("Source code encoding problem 04.")
 
-if ord(u"\u00E4") != 0xE4:
+if ord("\u00E4") != 0xE4:
     raise RuntimeError("Source code encoding problem 05.")
 
-if len(u"\u00E4") != 1:
+if len("\u00E4") != 1:
     raise RuntimeError("Source code encoding problem 06.")
 
-if ord(u"\U000000E4") != 0xE4:
+if ord("\U000000E4") != 0xE4:
     raise RuntimeError("Source code encoding problem 07.")
 
-if len(u"\U000000E4") != 1:
+if len("\U000000E4") != 1:
     raise RuntimeError("Source code encoding problem 08.")
 
-if ord(u"ä") != 0xE4:
+if ord("ä") != 0xE4:
     raise RuntimeError("Source code encoding problem 09.")
 
-if len(u"ä") != 1:
+if len("ä") != 1:
     raise RuntimeError("Source code encoding problem 10.")
 
-if ord(u"\u1E9E") != 0x1E9E:
+if ord("\u1E9E") != 0x1E9E:
     raise RuntimeError("Source code encoding problem 11.")
 
-if len(u"\u1E9E") != 1:
+if len("\u1E9E") != 1:
     raise RuntimeError("Source code encoding problem 12.")
 
-if ord(u"\U00001E9E") != 0x1E9E:
+if ord("\U00001E9E") != 0x1E9E:
     raise RuntimeError("Source code encoding problem 13.")
 
-if len(u"\U00001E9E") != 1:
+if len("\U00001E9E") != 1:
     raise RuntimeError("Source code encoding problem 14.")
 
-if ord(u"ẞ") != 0x1E9E:
+if ord("ẞ") != 0x1E9E:
     raise RuntimeError("Source code encoding problem 15.")
 
-if len(u"ẞ") != 1:
+if len("ẞ") != 1:
     raise RuntimeError("Source code encoding problem 16.")
 
-if ord(u"\U0001F404"[0]) != 0x1F404 and ord(u"\U0001F404"[0]) != 0xD83D:
+if ord("\U0001F404"[0]) != 0x1F404 and ord("\U0001F404"[0]) != 0xD83D:
     raise RuntimeError("Source code encoding problem 17.")
 
-if len(u"\U0001F404") != 1 and len(u"\U0001F404") != 2:
+if len("\U0001F404") != 1 and len("\U0001F404") != 2:
     raise RuntimeError("Source code encoding problem 18.")
 
-if ord(u"🐄"[0]) != 0x1F404 and ord(u"🐄"[0]) != 0xD83D:
+if ord("🐄"[0]) != 0x1F404 and ord("🐄"[0]) != 0xD83D:
     raise RuntimeError("Source code encoding problem 19.")
 
-if len(u"🐄") != 1 and len(u"🐄") != 2:
+if len("🐄") != 1 and len("🐄") != 2:
     raise RuntimeError("Source code encoding problem 20.")
 
 
@@ -137,7 +137,7 @@ class Hyphenator:
         Postcondition: Constructs a hyphenator object for the
         given patterns.
         """
-        if type(patterns) is not unicode:
+        if type(patterns) is not str:
             raise TypeError("The “patterns” parameter must be of type "
                             "“unicode”, but it isn’t.")
         self.tree = {}
@@ -148,8 +148,8 @@ class Hyphenator:
     def _insert_pattern(self, pattern):
         # Convert the a pattern like 'a1bc3d4' into a string of chars 'abcd'
         # and a list of points [ 0, 1, 0, 3, 4 ].
-        chars = re.sub(u'[0-9]', u'', pattern)
-        points = [int(d or 0) for d in re.split(u"[^0-9]", pattern)]
+        chars = re.sub('[0-9]', '', pattern)
+        points = [int(d or 0) for d in re.split("[^0-9]", pattern)]
         # Insert the pattern into the tree.  Each character finds a dict
         # another level down in the tree, and leaf nodes have the list of
         # points.
@@ -170,7 +170,7 @@ class Hyphenator:
             the word might get wrong hyphenation because the
             upper-case-letters are not recognized).
         """
-        if type(word) is not unicode:
+        if type(word) is not str:
             raise TypeError("The word must have the data type “unicode”, "
                             "but it doesn’t.")
         else:
@@ -289,7 +289,7 @@ class GermanLigatureSupport:
         WARNING This function must be kept
         in synch with isWordCharacter().
         """
-        if type(my_unicode_string) is not unicode:
+        if type(my_unicode_string) is not str:
             raise TypeError("The “my_unicode_string” parameter must be of "
                             "type “unicode”, but it isn’t.")
         return my_unicode_string.lower().replace("ſ", "s")
@@ -349,7 +349,7 @@ class GermanLigatureSupport:
     8.) Convert the pattern to UTF8
     > iconv -f ISO_8859-15 -t UTF-8 pattern.8 > ligature-pattern.utf8.txt
     """
-    __germanLigaturePatterns = (u"""
+    __germanLigaturePatterns = ("""
 .ab1a
 .ab3b
 .abel2
@@ -22251,15 +22251,15 @@ zzug4
         normalization.
         """
         return (# from german.tr
-                u"aAäÄâÂàÀáÁãÃåÅæÆbBcCçÇdDeEéÉèÈëËêÊfFgGhHiIíÍìÌîÎjJkKlLmMnN"
-                u"ñÑoOóÓòÒôÔöÖøØœŒpPqQrRsSšŠßtTuUúÚüÜvVwWxXyYÿŸzZžŽ"
+                "aAäÄâÂàÀáÁãÃåÅæÆbBcCçÇdDeEéÉèÈëËêÊfFgGhHiIíÍìÌîÎjJkKlLmMnN"
+                "ñÑoOóÓòÒôÔöÖøØœŒpPqQrRsSšŠßtTuUúÚüÜvVwWxXyYÿŸzZžŽ"
                 # U+1E9E LATIN CAPITAL LETTER SHARP S
-                u"ẞ"
+                "ẞ"
                 # U+017F LATIN SMALL LETTER LONG S
-                u"ſ"
+                "ſ"
                 # combing chararacters
                 # (normalization support, canonical decompositon)
-                u"\u030C\u0302\u0308\u0301\u0300\u030A\u0303\u0327")
+                "\u030C\u0302\u0308\u0301\u0300\u030A\u0303\u0327")
 
 
 class InstructionProvider(GermanLigatureSupport):
@@ -22283,9 +22283,9 @@ class InstructionProvider(GermanLigatureSupport):
         šâäéóöü
         :rtype: list
         """
-        if type(my_word) is not unicode:
+        if type(my_word) is not str:
             raise TypeError("myWord must be of type “unicode”, but it isn’t.")
-        stripped_word = u""
+        stripped_word = ""
         stripped_word_index = []
         folded_word = self.simple_case_fold_for_lookup(my_word)
         # Handle normalization…
@@ -22302,17 +22302,17 @@ class InstructionProvider(GermanLigatureSupport):
         # WARNING: This must be kept in synch with
         # GermanLigatureSupport.get_word_characters().
         folded_word = folded_word.\
-            replace(u"s\u030C", u"š\u00AD").\
-            replace(u"a\u0302", u"â\u00AD").\
-            replace(u"a\u0308", u"ä\u00AD").\
-            replace(u"e\u0301", u"é\u00AD").\
-            replace(u"o\u0301", u"ó\u00AD").\
-            replace(u"o\u0308", u"ö\u00AD").\
-            replace(u"u\u0308", u"ü\u00AD")
+            replace("s\u030C", "š\u00AD").\
+            replace("a\u0302", "â\u00AD").\
+            replace("a\u0308", "ä\u00AD").\
+            replace("e\u0301", "é\u00AD").\
+            replace("o\u0301", "ó\u00AD").\
+            replace("o\u0308", "ö\u00AD").\
+            replace("u\u0308", "ü\u00AD")
         for my_index in range(len(folded_word)):
             my_character = folded_word[my_index]
             # Do not copy SOFT HYPHEN and ZERO WIDTH NON JOINER
-            if my_character not in u"\u00AD\u200C":
+            if my_character not in "\u00AD\u200C":
                 stripped_word += my_character
                 stripped_word_index.append(my_index)
         hyphenated_word = self._myHyphenator.hyphenate_word(stripped_word)
@@ -22331,7 +22331,7 @@ class InstructionProvider(GermanLigatureSupport):
         my_status_list = []
         # First step: remove all ZWNJ, leave the rest without change.
         for my_character in my_word:
-            if my_character == u"\u200C":
+            if my_character == "\u200C":
                 my_status_list.append(False)
             else:
                 my_status_list.append(None)
@@ -22367,10 +22367,10 @@ def is_bmp_scalar_only(my_string):
     Unicode scalar values consists of the ranges 0 to D7FF (16) and E000 (16)
     to 10FFFF (16), inclusive.”
     """
-    if type(my_string) is not unicode:
+    if type(my_string) is not str:
         raise TypeError(
             "“my_string” must be of type “unicode”, but it isn’t.")
-    return re.search(u"[^\u0000-\uD7FF\uE000-\uFFFF]", my_string) is None
+    return re.search("[^\u0000-\uD7FF\uE000-\uFFFF]", my_string) is None
 
 
 def get_affected_text_objects():
@@ -22458,7 +22458,7 @@ class StoryInterface:
         if count == 0:
             if first >= self.length():
                 raise IndexError("“first” is out of range.")
-            return u""
+            return ""
         scribus.selectText(first, count, self.__identifier)
         return scribus.getAllText(self.__identifier).decode("utf8", "strict")
 
@@ -22514,7 +22514,7 @@ class StoryInterface:
         “story”, that means the common text content that is shared between
         this text frame and all linked text frames. Note that this function
         will (likely) change the current text selection of the story."""
-        if (type(first) is not int) or (type(text) is not unicode):
+        if (type(first) is not int) or (type(text) is not str):
             raise TypeError("“first” must be “integer” and “text” must "
                             "be “unicode”, but they aren’t.")
         if first < 0:
@@ -22560,9 +22560,9 @@ def show_messagebox(
     Preconditions: “caption” and “message” are of type “unicode”. icon,
     button1, button2 and button3 are either not used or of type int.
     Postcondition: Calls show_messagebox and returns the result."""
-    if type(caption) is not unicode:
+    if type(caption) is not str:
         raise TypeError("“caption” must be of type “unicode”, but it isn’t.")
-    if type(message) is not unicode:
+    if type(message) is not str:
         raise TypeError("“message” must be of type “unicode”, but it isn’t.")
     if type(icon) is not int:
         raise TypeError("“icon” must be of type “int”, but it isn’t.")
@@ -22590,7 +22590,7 @@ def do_ligature_setting():
     Postconditions: Does the ligature setting."""
     def ligature_setting_for_story(identifier, provider):
         interface = StoryInterface(identifier)
-        used_characters = provider.get_word_characters() + u"\u00AD\u200C"
+        used_characters = provider.get_word_characters() + "\u00AD\u200C"
         i = 0
         while i < interface.length():
             temp = interface.read_text(i, 1)
@@ -22627,7 +22627,7 @@ def do_ligature_setting():
                     # these indexes to do our modifications in Scribus.
                     if instruction_list[j] == True:
                         # Insert here a ZWNJ.
-                        interface.insert_text(u"\u200C", story_index)
+                        interface.insert_text("\u200C", story_index)
                         i += 1
                         story_index += 2
                     elif instruction_list[j] == False:
@@ -22641,127 +22641,127 @@ def do_ligature_setting():
                 i += 1
 
     german_locale = \
-        re.search(u"^de(u|@|_|$)", scribus.getGuiLanguage()) is not None
+        re.search("^de(u|@|_|$)", scribus.getGuiLanguage()) is not None
 
     if scribus.haveDoc() <= 0:
         if german_locale:
             show_messagebox(
-                u"Ligatursatz",
-                u"Kein Dokument gefunden.")
+                "Ligatursatz",
+                "Kein Dokument gefunden.")
         else:
             show_messagebox(
-                u"Ligature setting",
-                u"No document found.")
+                "Ligature setting",
+                "No document found.")
         return
     all_my_objects = get_affected_text_objects()
     if len(all_my_objects) <= 0:
         if german_locale:
             show_messagebox(
-                u"Ligatursatz",
-                u"Kein Textrahmen ausgewählt.")
+                "Ligatursatz",
+                "Kein Textrahmen ausgewählt.")
         else:
             show_messagebox(
-                u"Ligature setting",
-                u"No text frame selected.")
+                "Ligature setting",
+                "No text frame selected.")
         return
     if german_locale:
         result = show_messagebox(
-            u"Ligatursatz",
-            u"<b>Einführung</b>"
-                u"<br/>"
-                u"Einige Buchstaben\xADkombinationen sind eine "
-                u"Heraus\xADforderung für die Gestaltung von "
-                u"Schrift\xADarten. Ein gutes Beispiel ist die "
-                u"f\u2011i\u2011Kombi\xADna\xADtion. Das "
-                u"kleine\xA0f ist oft aus\xADladend gestaltet, und so "
-                u"ent\xADsteht eine unschöne Lücke zwischen dem kleinen\xA0f "
-                u"und dem kleinen\xA0i. Viele Schriftarten lösen dieses "
-                u"Problem durch Ligaturen. Die Buch\xADstaben werden "
-                u"ver\xADschmolzen; so wird die Lücke ver\xADmieden und das "
-                u"Schrift\xADbild wirkt harmonischer. Im Deutschen gibt es "
-                u"nun viele zusammen\xADgesetzte Wörter. Ligaturen "
-                u"erschweren hier aber das Lesen. Des\xADhalb wird bei "
-                u"deutschen Texten <i>in solchen Fällen</i> keine "
-                u"Ligatur gesetzt."
-                u"<br/>"
-                u"<br/>"
-                u"<b>Umsetzung</b>"
-                u"<br/>"
-                u"Ligaturen werden überall dort gesetzt, wo sie nicht "
-                u"durch einen Binde\xADhemmer (Unicode-Zeichen U+200C) "
-                u"unter\xADdrückt werden. Dieses kleine Skript arbeitet "
-                u"sich nun durch alle ausgewählten und alle mit ihnen "
-                u"verketteten Textrahmen und ergänzt und entfernt "
-                u"Bindehemmer gemäß den Regeln für deutschen "
-                u"Ligatursatz. Dieses Skript basiert "
-                u"auf einem Wörter\xADbuch, in dem für viele Wörter der "
-                u"passende Ligatur\xADsatz hinter\xADlegt ist. Bei Wörtern, "
-                u"die nicht im Wörter\xADbuch ver\xADzeichnet sind, "
-                u"ver\xADsucht das Skript, den passenden "
-                u"Ligatur\xADsatz zu „erraten“. "
-                u"Das Skript setzt Binde\xADhemmer an allen "
-                u"Morphem\xADgrenzen, und zwar unabhängig davon, ob die "
-                u"unter\xADdrückte Ligatur gebräuchlich ist oder in der "
-                u"dort verwendeten Schrift\xADart überhaupt vorkommt. Somit "
-                u"wird beim Wort „Auflage“ die häufig anzutreffende "
-                u"fl\u2011Ligatur durch einen Binde\xADhemmer unterdrückt. Aber "
-                u"auch beim Wort „Aufgabe“ wird zwischen\xA0f und\xA0g ein "
-                u"Binde\xADhemmer gesetzt, obwohl eine fg\u2011Ligatur nicht "
-                u"gebräuchlich ist. Dieses Vor\xADgehen hat den Nach\xADteil, "
-                u"dass wohl viele Binde\xADhemmer gesetzt werden, die "
-                u"keinen Effekt haben, weil die Schrift\xADart diese "
-                u"Ligaturen überhaupt nicht enthält. Dieses Vor\xADgehen "
-                u"hat aber den Vor\xADteil, dass es im Grund\xADsatz für alle "
-                u"Schrift\xADarten funktioniert – auch dann, wenn "
-                u"Schmuck\xADligaturen ver\xADwendet werden oder die "
-                u"Schrift\xADart exotische Ligaturen ent\xADhält.",
+            "Ligatursatz",
+            "<b>Einführung</b>"
+                "<br/>"
+                "Einige Buchstaben\xADkombinationen sind eine "
+                "Heraus\xADforderung für die Gestaltung von "
+                "Schrift\xADarten. Ein gutes Beispiel ist die "
+                "f\u2011i\u2011Kombi\xADna\xADtion. Das "
+                "kleine\xA0f ist oft aus\xADladend gestaltet, und so "
+                "ent\xADsteht eine unschöne Lücke zwischen dem kleinen\xA0f "
+                "und dem kleinen\xA0i. Viele Schriftarten lösen dieses "
+                "Problem durch Ligaturen. Die Buch\xADstaben werden "
+                "ver\xADschmolzen; so wird die Lücke ver\xADmieden und das "
+                "Schrift\xADbild wirkt harmonischer. Im Deutschen gibt es "
+                "nun viele zusammen\xADgesetzte Wörter. Ligaturen "
+                "erschweren hier aber das Lesen. Des\xADhalb wird bei "
+                "deutschen Texten <i>in solchen Fällen</i> keine "
+                "Ligatur gesetzt."
+                "<br/>"
+                "<br/>"
+                "<b>Umsetzung</b>"
+                "<br/>"
+                "Ligaturen werden überall dort gesetzt, wo sie nicht "
+                "durch einen Binde\xADhemmer (Unicode-Zeichen U+200C) "
+                "unter\xADdrückt werden. Dieses kleine Skript arbeitet "
+                "sich nun durch alle ausgewählten und alle mit ihnen "
+                "verketteten Textrahmen und ergänzt und entfernt "
+                "Bindehemmer gemäß den Regeln für deutschen "
+                "Ligatursatz. Dieses Skript basiert "
+                "auf einem Wörter\xADbuch, in dem für viele Wörter der "
+                "passende Ligatur\xADsatz hinter\xADlegt ist. Bei Wörtern, "
+                "die nicht im Wörter\xADbuch ver\xADzeichnet sind, "
+                "ver\xADsucht das Skript, den passenden "
+                "Ligatur\xADsatz zu „erraten“. "
+                "Das Skript setzt Binde\xADhemmer an allen "
+                "Morphem\xADgrenzen, und zwar unabhängig davon, ob die "
+                "unter\xADdrückte Ligatur gebräuchlich ist oder in der "
+                "dort verwendeten Schrift\xADart überhaupt vorkommt. Somit "
+                "wird beim Wort „Auflage“ die häufig anzutreffende "
+                "fl\u2011Ligatur durch einen Binde\xADhemmer unterdrückt. Aber "
+                "auch beim Wort „Aufgabe“ wird zwischen\xA0f und\xA0g ein "
+                "Binde\xADhemmer gesetzt, obwohl eine fg\u2011Ligatur nicht "
+                "gebräuchlich ist. Dieses Vor\xADgehen hat den Nach\xADteil, "
+                "dass wohl viele Binde\xADhemmer gesetzt werden, die "
+                "keinen Effekt haben, weil die Schrift\xADart diese "
+                "Ligaturen überhaupt nicht enthält. Dieses Vor\xADgehen "
+                "hat aber den Vor\xADteil, dass es im Grund\xADsatz für alle "
+                "Schrift\xADarten funktioniert – auch dann, wenn "
+                "Schmuck\xADligaturen ver\xADwendet werden oder die "
+                "Schrift\xADart exotische Ligaturen ent\xADhält.",
                 scribus.ICON_NONE,
                 scribus.BUTTON_OK,
                 scribus.BUTTON_CANCEL)
     else:
         result = show_messagebox(
-            u"Ligature setting",
-            u"<b>Introduction</b>"
-                u"<br/>"
-                u"Some character combinations are a challenge for type "
-                u"design. A good example is the f-i\xA0combination. The "
-                u"small\xA0f has often a spreading design, so there is an "
-                u"unpleasant gap between the small\xA0f and the small\xA0i. "
-                u"Many fonts solve this problem by using ligatures. The "
-                u"glyphs are melt together and the typeface is more "
-                u"harmonious. But in German, there are many compound "
-                u"words. Now ligatures make reading more difficult. "
-                u"Therefore <i>in such cases</i> ligatures are not used "
-                u"in German."
-                u"<br/>"
-                u"<br/>"
-                u"<b>Implementation</b>"
-                u"<br/>"
-                u"Ligatures are used everywhere, except they are "
-                u"suppressed with a zero\xA0width non-joiner (Unicode "
-                u"character U+200C). This little script walks through "
-                u"all selected text frames and all text frames linked "
-                u"with them, and completes and removes zero\xA0width "
-                u"non-joiner following the rules for German ligatures. "
-                u"This script is based on a dictionary "
-                u"that provides the fitting ligature setting "
-                u"for many German words. For words that are not in the "
-                u"dictionary, the script tries to guess the fitting "
-                u"ligature setting. The script inserts zero\xA0width "
-                u"non-joiners on all morpheme boundaries, regardless of "
-                u"whether the suppressed ligature is common or available "
-                u"at all in the current font face. So for the word "
-                u"“Auflage” the common fl\xA0ligature is suppressed by a "
-                u"zero\xA0width non-joiner. But also in the word “Aufgabe” "
-                u"a zero\xA0width non-joiner is inserted between\xA0f and\xA0g "
-                u"even though an fg ligature is not common. This "
-                u"approach has the disadvantage that probably many "
-                u"zero\xA0width non-joiners are inserted that will have no "
-                u"effect because the font face does not even contain "
-                u"these ligatures. But this approach has the advantage "
-                u"that is works in principle for all font faces, also "
-                u"if discretionary ligatures are used or if the "
-                u"font face contains exotic ligatures.",
+            "Ligature setting",
+            "<b>Introduction</b>"
+                "<br/>"
+                "Some character combinations are a challenge for type "
+                "design. A good example is the f-i\xA0combination. The "
+                "small\xA0f has often a spreading design, so there is an "
+                "unpleasant gap between the small\xA0f and the small\xA0i. "
+                "Many fonts solve this problem by using ligatures. The "
+                "glyphs are melt together and the typeface is more "
+                "harmonious. But in German, there are many compound "
+                "words. Now ligatures make reading more difficult. "
+                "Therefore <i>in such cases</i> ligatures are not used "
+                "in German."
+                "<br/>"
+                "<br/>"
+                "<b>Implementation</b>"
+                "<br/>"
+                "Ligatures are used everywhere, except they are "
+                "suppressed with a zero\xA0width non-joiner (Unicode "
+                "character U+200C). This little script walks through "
+                "all selected text frames and all text frames linked "
+                "with them, and completes and removes zero\xA0width "
+                "non-joiner following the rules for German ligatures. "
+                "This script is based on a dictionary "
+                "that provides the fitting ligature setting "
+                "for many German words. For words that are not in the "
+                "dictionary, the script tries to guess the fitting "
+                "ligature setting. The script inserts zero\xA0width "
+                "non-joiners on all morpheme boundaries, regardless of "
+                "whether the suppressed ligature is common or available "
+                "at all in the current font face. So for the word "
+                "“Auflage” the common fl\xA0ligature is suppressed by a "
+                "zero\xA0width non-joiner. But also in the word “Aufgabe” "
+                "a zero\xA0width non-joiner is inserted between\xA0f and\xA0g "
+                "even though an fg ligature is not common. This "
+                "approach has the disadvantage that probably many "
+                "zero\xA0width non-joiners are inserted that will have no "
+                "effect because the font face does not even contain "
+                "these ligatures. But this approach has the advantage "
+                "that is works in principle for all font faces, also "
+                "if discretionary ligatures are used or if the "
+                "font face contains exotic ligatures.",
             scribus.ICON_NONE,
             scribus.BUTTON_OK,
             scribus.BUTTON_CANCEL)
@@ -22792,12 +22792,12 @@ def do_ligature_setting():
         # Show final message (if no exceptions have been raised so far)…
         if german_locale:
             show_messagebox(
-                u"Ligatursatz",
-                u"Der Ligatursatz ist abgeschlossen.")
+                "Ligatursatz",
+                "Der Ligatursatz ist abgeschlossen.")
         else:
             show_messagebox(
-                u"Ligature setting",
-                u"Ligature setting has finished.")
+                "Ligature setting",
+                "Ligature setting has finished.")
     finally:
         # Make sure that redraw gets enabled again.
         scribus.setRedraw(True)

@@ -250,7 +250,7 @@ class RecordStats(IndexFormats, ValuesGetterMixin):
             start = self._index - length
             return PrevNextPage(self._origList, length, start)
 
-    def next(self):
+    def __next__(self):
         if self._index + self.length() == self.length():
             return None
         else:

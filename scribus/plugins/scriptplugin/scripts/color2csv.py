@@ -35,7 +35,7 @@ Author: Sebastian Stetter
 
 please report bugs to: scribusscript@sebastianstetter.de
 """
-from __future__ import division
+
 import sys
 
 __version__=1.0

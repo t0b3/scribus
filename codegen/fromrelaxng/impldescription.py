@@ -57,7 +57,7 @@ class Class(object):
             if p.datatype == None and p.refname in refnames:
                                 p.datatype = refnames[p.refname].datatype
             if p.datatype == None:
-                print "X>>>", p.name, p.refname, refnames
+                print("X>>>", p.name, p.refname, refnames)
             
             if p.datatype.find("<") > 0:
                 wrapper,lt,args = p.datatype[:-1].partition("<")

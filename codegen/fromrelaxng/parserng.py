@@ -125,7 +125,7 @@ class RNG_Parser(object):
 
 
 def dumpTree(i, tree):
-    print i*"  " + tree.tag + "  " + str(tree.attrib) + "  " + repr(tree.text)
+    print(i*"  " + tree.tag + "  " + str(tree.attrib) + "  " + repr(tree.text))
     for e in tree.getchildren():
         dumpTree(i+1, e)
     
@@ -141,12 +141,12 @@ def testParser(file):
         c.addIncludes(x.imports, x.refnames)
 
     for c in x.classes:
-        print "%s (%s) TEMPL %s" % (c.name, c.datatype, c.template)
-        print "\t#imports", c.includes
-        print "\tclass", c.classreferences, ";"
-        print "  Properties:"
+        print("%s (%s) TEMPL %s" % (c.name, c.datatype, c.template))
+        print("\t#imports", c.includes)
+        print("\tclass", c.classreferences, ";")
+        print("  Properties:")
         for p in c.properties:
-            print "\t%s (%s) %s\t|%s|\t INIT %s" % (p.name, p.datatype, "OPT" if p.optional else "", p.type, p.initial)
+            print("\t%s (%s) %s\t|%s|\t INIT %s" % (p.name, p.datatype, "OPT" if p.optional else "", p.type, p.initial))
 
 def testmain():
     import sys
@@ -156,7 +156,7 @@ def testmain():
     cwd = os.path.dirname(sys.argv[0])
     err = os.system("java -jar %s/../trang/trang.jar %s %s" % (cwd, rncfile, rngfile))
     if err != 0:
-        print "aborting"
+        print("aborting")
         exit(err)
         
     testParser(rngfile)

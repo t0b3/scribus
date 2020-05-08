@@ -12,7 +12,7 @@ import os.path
 from os.path import getmtime, exists
 import time
 import types
-import __builtin__
+import builtins
 from Cheetah.Version import MinCompatibleVersion as RequiredCheetahVersion
 from Cheetah.Version import MinCompatibleVersionTuple as RequiredCheetahVersionTuple
 from Cheetah.Template import Template

@@ -15,7 +15,7 @@ import time                       # used in the cache refresh code
 from random import randrange
 import imp
 import inspect
-import StringIO
+import io
 import traceback
 import pprint
 import cgi                # Used by .webInput() if the template is a CGI script.
@@ -145,7 +145,7 @@ class TemplatePreprocessor(object):
         """
         settings = self._settings
         if not source: # @@TR: this needs improving
-            if isinstance(file, (str, unicode)): # it's a filename.
+            if isinstance(file, str): # it's a filename.
                 f = open(file)
                 source = f.read()
                 f.close()
@@ -156,7 +156,7 @@ class TemplatePreprocessor(object):
         templateAPIClass = settings.templateAPIClass
         possibleKwArgs = [
             arg for arg in
-            inspect.getargs(templateAPIClass.compile.im_func.func_code)[0]
+            inspect.getargs(templateAPIClass.compile.__func__.__code__)[0]
             if arg not in ('klass', 'source', 'file',)]
 
         compileKwArgs = {}
@@ -586,10 +586,10 @@ class Template(Servlet):
         """
         errmsg = "arg '%s' must be %s"
 
-        if not isinstance(source, (types.NoneType, basestring)):
+        if not isinstance(source, (type(None), str)):
             raise TypeError(errmsg % ('source', 'string or None'))
 
-        if not isinstance(file, (types.NoneType, basestring, filetype)):
+        if not isinstance(file, (type(None), str, filetype)):
             raise TypeError(errmsg %
                             ('file', 'string, file-like object, or None'))
 
@@ -598,7 +598,7 @@ class Template(Servlet):
         if isinstance(baseclass, Template):
             baseclass = baseclass.__class__
 
-        if not isinstance(baseclass, (types.NoneType, basestring, type)):
+        if not isinstance(baseclass, (type(None), str, type)):
             raise TypeError(errmsg % ('baseclass', 'string, class or None'))
 
         if cacheCompilationResults is Unspecified:
@@ -629,11 +629,11 @@ class Template(Servlet):
         if not isinstance(keepRefToGeneratedCode, (int, bool)):
             raise TypeError(errmsg % ('keepReftoGeneratedCode', 'boolean'))
 
-        if not isinstance(moduleName, (types.NoneType, basestring)):
+        if not isinstance(moduleName, (type(None), str)):
             raise TypeError(errmsg % ('moduleName', 'string or None'))
         __orig_file__ = None
         if not moduleName:
-            if file and isinstance(file, basestring):
+            if file and isinstance(file, str):
                 moduleName = convertTmplPathToModuleName(file)
                 __orig_file__ = file
             else:
@@ -642,14 +642,14 @@ class Template(Servlet):
         if className is Unspecified:
             className = klass._CHEETAH_defaultClassNameForTemplates
 
-        if not isinstance(className, (types.NoneType, basestring)):
+        if not isinstance(className, (type(None), str)):
             raise TypeError(errmsg % ('className', 'string or None'))
         className = re.sub(r'^_+','', className or moduleName)
 
         if mainMethodName is Unspecified:
             mainMethodName = klass._CHEETAH_defaultMainMethodNameForTemplates
 
-        if not isinstance(mainMethodName, (types.NoneType, basestring)):
+        if not isinstance(mainMethodName, (type(None), str)):
             raise TypeError(errmsg % ('mainMethodName', 'string or None'))
 
         if moduleGlobals is Unspecified:
@@ -665,7 +665,7 @@ class Template(Servlet):
         if cacheDirForModuleFiles is Unspecified:
             cacheDirForModuleFiles = klass._CHEETAH_cacheDirForModuleFiles
 
-        if not isinstance(cacheDirForModuleFiles, (types.NoneType, basestring)):
+        if not isinstance(cacheDirForModuleFiles, (type(None), str)):
             raise TypeError(errmsg %
                             ('cacheDirForModuleFiles', 'string or None'))
 
@@ -680,7 +680,7 @@ class Template(Servlet):
         baseclassValue = None
         baseclassName = None
         if baseclass:
-            if isinstance(baseclass, basestring):
+            if isinstance(baseclass, str):
                 baseclassName = baseclass
             elif isinstance(baseclass, type):
                 # @@TR: should soft-code this
@@ -690,7 +690,7 @@ class Template(Servlet):
 
         cacheHash = None
         cacheItem = None
-        if source or isinstance(file, basestring):
+        if source or isinstance(file, str):
             compilerSettingsHash = None
             if compilerSettings:
                 compilerSettingsHash = hashDict(compilerSettings)
@@ -786,7 +786,7 @@ class Template(Servlet):
                 try:
                     co = compile(generatedModuleCode, __file__, 'exec')
                     exec(co, mod.__dict__)
-                except SyntaxError, e:
+                except SyntaxError as e:
                     try:
                         parseError = genParserErrorFromPythonException(
                             source, file, generatedModuleCode, exception=e)
@@ -796,7 +796,7 @@ class Template(Servlet):
                         raise e
                     else:
                         raise parseError
-                except Exception, e:
+                except Exception as e:
                     updateLinecache(__file__, generatedModuleCode)
                     e.generatedModuleCode = generatedModuleCode
                     raise
@@ -930,7 +930,7 @@ class Template(Servlet):
             normalizeSearchList(settings.templateInitArgs['searchList']))
             
         if not hasattr(settings, 'outputTransformer'):
-            settings.outputTransformer = unicode
+            settings.outputTransformer = str
 
         if not hasattr(settings, 'templateAPIClass'):
             class PreprocessTemplateAPIClass(klass): pass
@@ -981,13 +981,13 @@ class Template(Servlet):
         for methodname in klass._CHEETAH_requiredCheetahMethods:
             if not hasattr(concreteTemplateClass, methodname):
                 method = getattr(Template, methodname)
-                newMethod = createMethod(method.im_func, concreteTemplateClass)
+                newMethod = createMethod(method.__func__, concreteTemplateClass)
                 setattr(concreteTemplateClass, methodname, newMethod)
 
         for classMethName in klass._CHEETAH_requiredCheetahClassMethods:
             if not hasattr(concreteTemplateClass, classMethName):
                 meth = getattr(klass, classMethName)
-                setattr(concreteTemplateClass, classMethName, classmethod(meth.im_func))
+                setattr(concreteTemplateClass, classMethName, classmethod(meth.__func__))
             
         for attrname in klass._CHEETAH_requiredCheetahClassAttributes:
             attrname = '_CHEETAH_'+attrname
@@ -1003,7 +1003,7 @@ class Template(Servlet):
             if mainMethName:
                 def __str__(self): 
                     rc = getattr(self, mainMethName)()
-                    if isinstance(rc, unicode):
+                    if isinstance(rc, str):
                         return rc.encode('utf-8')
                     return rc
                 def __unicode__(self):
@@ -1012,7 +1012,7 @@ class Template(Servlet):
                   and concreteTemplateClass.respond!=Servlet.respond):
                 def __str__(self):
                     rc = self.respond()
-                    if isinstance(rc, unicode):
+                    if isinstance(rc, str):
                         return rc.encode('utf-8')
                     return rc
                 def __unicode__(self):
@@ -1026,7 +1026,7 @@ class Template(Servlet):
                         rc = self.respond()
                     else:
                         rc = super(self.__class__, self).__str__()
-                    if isinstance(rc, unicode):
+                    if isinstance(rc, str):
                         return rc.encode('utf-8')
                     return rc
                 def __unicode__(self):
@@ -1168,26 +1168,26 @@ class Template(Servlet):
         errmsg = "arg '%s' must be %s"
         errmsgextra = errmsg + "\n%s"
 
-        if not isinstance(source, (types.NoneType, basestring)):
+        if not isinstance(source, (type(None), str)):
             raise TypeError(errmsg % ('source', 'string or None'))
 
-        if not isinstance(source, (types.NoneType, basestring, filetype)):
+        if not isinstance(source, (type(None), str, filetype)):
             raise TypeError(errmsg %
                             ('file', 'string, file open for reading, or None'))
 
-        if not isinstance(filter, (basestring, types.TypeType)) and not \
+        if not isinstance(filter, (str, type)) and not \
                 (isinstance(filter, type) and issubclass(filter, Filters.Filter)):
             raise TypeError(errmsgextra %
                             ('filter', 'string or class',
                              '(if class, must be subclass of Cheetah.Filters.Filter)'))
-        if not isinstance(filtersLib, (basestring, types.ModuleType)):
+        if not isinstance(filtersLib, (str, types.ModuleType)):
             raise TypeError(errmsgextra %
                             ('filtersLib', 'string or module',
                              '(if module, must contain subclasses of Cheetah.Filters.Filter)'))
 
         if not errorCatcher is None:
             err = True
-            if isinstance(errorCatcher, (basestring, types.TypeType)):
+            if isinstance(errorCatcher, (str, type)):
                 err = False
             if isinstance(errorCatcher, type) and \
                     issubclass(errorCatcher, ErrorCatchers.ErrorCatcher): 
@@ -1197,7 +1197,7 @@ class Template(Servlet):
                             ('errorCatcher', 'string, class or None',
                              '(if class, must be subclass of Cheetah.ErrorCatchers.ErrorCatcher)'))
         if compilerSettings is not Unspecified:
-            if not isinstance(compilerSettings, types.DictType):
+            if not isinstance(compilerSettings, dict):
                 raise TypeError(errmsg %
                                 ('compilerSettings', 'dictionary'))
         
@@ -1329,7 +1329,7 @@ class Template(Servlet):
         """
         
         if not cacheRegionId:
-            for cacheRegion in self.getCacheRegions().itervalues():
+            for cacheRegion in self.getCacheRegions().values():
                 cacheRegion.clear()
         else:
             cregion = self._CHEETAH__cacheRegions.get(cacheRegionId)
@@ -1435,7 +1435,7 @@ class Template(Servlet):
         Type 'python yourtemplate.py --help to see what it's capabable of.
         """
 
-        from TemplateCmdLineIface import CmdLineIface
+        from .TemplateCmdLineIface import CmdLineIface
         CmdLineIface(templateObj=self).run()
         
     ##################################################
@@ -1494,7 +1494,7 @@ class Template(Servlet):
         # @@TR: consider allowing simple callables as the filter argument
         self._CHEETAH__filtersLib = filtersLib
         self._CHEETAH__filters = {}
-        if isinstance(filter, basestring):
+        if isinstance(filter, str):
             filterName = filter
             klass = getattr(self._CHEETAH__filtersLib, filterName)
         else:
@@ -1505,7 +1505,7 @@ class Template(Servlet):
 
         self._CHEETAH__errorCatchers = {}
         if errorCatcher:
-            if isinstance(errorCatcher, basestring):
+            if isinstance(errorCatcher, str):
                 errorCatcherClass = getattr(ErrorCatchers, errorCatcher)
             elif isinstance(errorCatcher, type):
                 errorCatcherClass = errorCatcher
@@ -1541,7 +1541,7 @@ class Template(Servlet):
         self._fileMtime = None
         self._fileDirName = None
         self._fileBaseName = None
-        if file and isinstance(file, basestring):
+        if file and isinstance(file, str):
             file = self.serverSidePath(file)
             self._fileMtime = os.path.getmtime(file)
             self._fileDirName, self._fileBaseName = os.path.split(file)
@@ -1555,7 +1555,7 @@ class Template(Servlet):
         if not self.__class__ == Template:
             # Only propogate attributes if we're in a subclass of 
             # Template
-            for k, v in self.__class__.__dict__.iteritems():
+            for k, v in self.__class__.__dict__.items():
                 if not v or k.startswith('__'):
                     continue
                 ## Propogate the class attributes to the instance 
@@ -1580,7 +1580,7 @@ class Template(Servlet):
             if not raw:
                 if includeFrom == 'file':
                     source = None
-                    if isinstance(srcArg, basestring):
+                    if isinstance(srcArg, str):
                         if hasattr(self, 'serverSidePath'):
                             file = path = self.serverSidePath(srcArg)
                         else:
@@ -1865,9 +1865,9 @@ def genParserErrorFromPythonException(source, file, generatedPyCode, exception):
 
     #print dir(exception)
     
-    filename = isinstance(file, (str, unicode)) and file or None
+    filename = isinstance(file, str) and file or None
 
-    sio = StringIO.StringIO()
+    sio = io.StringIO()
     traceback.print_exc(1, sio)
     formatedExc = sio.getvalue()
     

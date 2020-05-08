@@ -78,7 +78,7 @@ class MenuHooks(object):
         @rtype: QAction instance
         @return: action for inserted menu
         """
-        if isinstance(before_menu, basestring):
+        if isinstance(before_menu, str):
             before_menu = self.findMenu(before_menu)
         before_action = self.actionForMenu(before_menu)
         # I have no clue why QMenuBar::insertMenu only allows
@@ -110,7 +110,7 @@ class MenuHooks(object):
         """
         Insert a menu before another menu in the menubar
         """
-        if isinstance(after_menu, basestring):
+        if isinstance(after_menu, str):
             after_menu = self.findMenu(after_menu)
         after_after_menu = self.menuAfter(after_menu)
         if after_after_menu:
@@ -120,11 +120,11 @@ class MenuHooks(object):
 
 
     def appendItem(self, menu, item, *extra_args):
-        if isinstance(menu, basestring):
+        if isinstance(menu, str):
             title = menu
             menu = self.findMenu(title)
             if not menu:
-                raise ValueError, "Menu %r not found" % title
+                raise ValueError("Menu %r not found" % title)
         if isinstance(item, QMenu): 
             action = menu.addMenu(item)
         else:
@@ -133,6 +133,6 @@ class MenuHooks(object):
 
 
     def appendSeparator(self, menu):
-        if isinstance(menu, basestring):
+        if isinstance(menu, str):
             menu = self.findMenu(menu)
         menu.addSeparator()

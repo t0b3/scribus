@@ -22,10 +22,10 @@ wiki.scribus.net/canvas/Align_an_Image_in_its_Frame
 import scribus
  
 try:
-    from Tkinter import *
-    from tkFont import Font
+    from tkinter import *
+    from tkinter.font import Font
 except ImportError:
-    print "This script requires Python's Tkinter properly installed."
+    print("This script requires Python's Tkinter properly installed.")
     scribus.messageBox('Script failed',
                'This script requires Python\'s Tkinter properly installed.',
                scribus.ICON_CRITICAL)

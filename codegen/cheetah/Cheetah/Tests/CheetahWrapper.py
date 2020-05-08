@@ -111,7 +111,7 @@ class CFBase(unittest.TestCase):
         path = os.path.abspath(path)
         exists = os.path.exists(path)
         msg = "destination file missing: %s" % path
-        self.failUnless(exists, msg)
+        self.assertTrue(exists, msg)
         f = open(path, 'r')
         result = f.read()
         f.close()
@@ -120,7 +120,7 @@ class CFBase(unittest.TestCase):
         else:
             success = result == expected
         msg = errmsg % locals()
-        self.failUnless(success, msg)
+        self.assertTrue(success, msg)
 
 
     def checkCompile(self, path):
@@ -148,11 +148,11 @@ Found %(result)r"""
         """
         exists = os.path.exists(path)
         msg = "destination subdirectory %s misssing" % path
-        self.failUnless(exists, msg)
+        self.assertTrue(exists, msg)
         initPath = os.path.join(path, "__init__.py")
         exists = os.path.exists(initPath)
         msg = "destination init file missing: %s" % initPath
-        self.failUnless(exists, msg)
+        self.assertTrue(exists, msg)
 
 
     def checkNoBackup(self, path):
@@ -160,7 +160,7 @@ Found %(result)r"""
         """
         exists = os.path.exists(path)
         msg = "backup file exists in spite of --nobackup: %s" % path
-        self.failIf(exists, msg)
+        self.assertFalse(exists, msg)
 
     def locate_cheetah(self, cmd):
         paths = os.getenv('PATH')
@@ -201,10 +201,10 @@ Found %(result)r"""
             status, output = self.assertPosixSubprocess(cmd)
 
         if not nonzero:
-            self.failUnlessEqual(status, 0, '''Subprocess exited with a non-zero status (%d)
+            self.assertEqual(status, 0, '''Subprocess exited with a non-zero status (%d)
                             %s''' % (status, output))
         else:
-            self.failIfEqual(status, 0, '''Subprocess exited with a zero status (%d)
+            self.assertNotEqual(status, 0, '''Subprocess exited with a zero status (%d)
                             %s''' % (status, output))
         return output 
     
@@ -224,7 +224,7 @@ Found %(result)r"""
             msg = "substring %r not found in subcommand output: %s" % \
                 (expectedOutputSubstring, cmd)
             substringTest = output.find(expectedOutputSubstring) != -1
-            self.failUnless(substringTest, msg)
+            self.assertTrue(substringTest, msg)
 
 
 class CFIdirBase(CFBase):

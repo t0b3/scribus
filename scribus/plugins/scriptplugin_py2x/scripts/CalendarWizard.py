@@ -54,16 +54,16 @@ import datetime
 try:
     from scribus import *
 except ImportError:
-    print "This Python script is written for the Scribus scripting interface."
-    print "It can only be run from within Scribus."
+    print("This Python script is written for the Scribus scripting interface.")
+    print("It can only be run from within Scribus.")
     sys.exit(1)
 
 try:
     # I wish PyQt installed everywhere :-/
-    from Tkinter import *
-    from tkFont import Font
+    from tkinter import *
+    from tkinter.font import Font
 except ImportError:
-    print "This script requires Python's Tkinter properly installed."
+    print("This script requires Python's Tkinter properly installed.")
     messageBox('Script failed',
                'This script requires Python\'s Tkinter properly installed.',
                ICON_CRITICAL)
@@ -121,17 +121,17 @@ localization = {
       'Lokakuu', 'Marraskuu', 'Joulukuu'],
      ['ma','ti','ke','to','pe','la', 'su']],
 'French':
-    [['Janvier', u'F\xe9vrier', 'Mars', 'Avril',
-      'Mai', 'Juin', 'Juillet', u'Ao\xfbt', 'Septembre',
-      'Octobre', 'Novembre', u'D\xe9cembre'],
+    [['Janvier', 'F\xe9vrier', 'Mars', 'Avril',
+      'Mai', 'Juin', 'Juillet', 'Ao\xfbt', 'Septembre',
+      'Octobre', 'Novembre', 'D\xe9cembre'],
      ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']],
 'German' :
-    [['Januar', 'Februar', u'M\xe4rz', 'April',
+    [['Januar', 'Februar', 'M\xe4rz', 'April',
       'Mai', 'Juni', 'Juli', 'August', 'September',
       'Oktober', 'November', 'Dezember'],
      ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag']],
 'German (Austrian)' :
-    [[u'J\xe4nner', 'Feber', u'M\xe4rz', 'April',
+    [['J\xe4nner', 'Feber', 'M\xe4rz', 'April',
       'Mai', 'Juni', 'Juli', 'August', 'September',
       'Oktober', 'November', 'Dezember'],
      ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag']],
@@ -151,7 +151,7 @@ localization = {
     [['Gennaio', 'Febbraio', 'Marzo', 'Aprile',
        'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre',
        'Ottobre', 'Novembre', 'Dicembre'],
-    [u'Luned\xec', u'Marted\xec', u'Mercoled\xec', u'Gioved\xec', u'Venerd\xec', 'Sabato', 'Domenica']],
+    ['Luned\xec', 'Marted\xec', 'Mercoled\xec', 'Gioved\xec', 'Venerd\xec', 'Sabato', 'Domenica']],
 # Norwegian by Joacim Thomassen joacim@net.homelinux.org
 'Norwegian' :
     [['Januar', 'Februar','Mars', 'April','Mai', 'Juni','Juli', 'August','September', 'Oktober', 'November', 'Desember'],
@@ -163,10 +163,10 @@ localization = {
       'Październik', 'Listopad', 'Grudzień'],
      ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']],
 'Portuguese' :
-    [['Janeiro', 'Fevereiro', u'Mar\xe7o', 'Abril',
+    [['Janeiro', 'Fevereiro', 'Mar\xe7o', 'Abril',
       'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro',
       'Outubro', 'Novembro', 'Dezembro'],
-     ['Segunda-feira', u'Ter\xe7a-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', u'S\xe1bado', 'Domingo']],
+     ['Segunda-feira', 'Ter\xe7a-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'S\xe1bado', 'Domingo']],
 # Romanian by Costin Stroie <costinstroie@eridu.eu.org>
 'Romanian' :
     [['Ianuarie', 'Februarie', 'Martie', 'Aprilie',
@@ -192,7 +192,7 @@ localization = {
     [['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
       'Junio', 'Julio', 'Agosto', 'Septiembre',
       'Octubre', 'Noviembre', 'Diciembre'],
-     ['Lunes', 'Martes', u'Mi\xe9rcoles', 'Jueves', 'Viernes', u'S\xe1bado', 'Domingo']],
+     ['Lunes', 'Martes', 'Mi\xe9rcoles', 'Jueves', 'Viernes', 'S\xe1bado', 'Domingo']],
 'Swedish' :
     [['Januari', 'Februari','Mars', 'April','Maj', 'Juni','Juli', 'Augusti','September', 'Oktober', 'November', 'December'],
      ['Måndag', 'Tisdag','Onsdag', 'Torsdag','Fredag', 'Lördag','Söndag']]

@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 Author: Sebastian Stetter
 please report bugs to: scribusscript@sebastianstetter.de
 """
-from __future__ import division
+
 import sys
 __version__=1.1
 try:

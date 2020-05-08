@@ -40,7 +40,7 @@ Author: Sebastian Stetter
 
 please report bugs to: scribusscript@sebastianstetter.de
 """
-from __future__ import division
+
 import sys
 
 __version__=1.1
@@ -51,9 +51,9 @@ try:
     # Do so _after_ the 'import scribus' and only import the names you need, such
     # as commonly used constants.
     import scribus
-except ImportError,err:
-    print "This Python script is written for the Scribus scripting interface."
-    print "It can only be run from within Scribus."
+except ImportError as err:
+    print("This Python script is written for the Scribus scripting interface.")
+    print("It can only be run from within Scribus.")
     sys.exit(1)
 
 #########################
@@ -129,7 +129,7 @@ def importColors(colorlist):
             m=color[2]
             y=color[3]
             k=color[4]
-            while colordict.has_key(name):# check if color already exists - then add PREFIX to name
+            while name in colordict:# check if color already exists - then add PREFIX to name
                 name = PREFIX+name
             
             scribus.defineColorCMYK(name, c, m, y, k)

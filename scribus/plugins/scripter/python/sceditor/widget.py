@@ -17,10 +17,10 @@ from PyQt4.QtGui import (QTextCursor, QBrush, QFont, QPainter, QVBoxLayout,
                          QApplication, QKeyEvent, QTextBlockUserData, QPen, QPlainTextEdit, 
                          QHBoxLayout, QPalette, QColor, QFrame, QWidget, QMessageBox)
 
-from indenter import PythonCodeIndenter
-from assist import AutoComplete, CallTip
+from .indenter import PythonCodeIndenter
+from .assist import AutoComplete, CallTip
 
-from highlighter import PythonHighlighter,  QtScriptHighlighter
+from .highlighter import PythonHighlighter,  QtScriptHighlighter
 
 
 
@@ -65,13 +65,13 @@ class RopeEditorWrapper(object):
             block = block.previous()
             row -= 1
         while row < line_no:
-            block = block.next()
+            block = next(block)
             row += 1
         return block
 
 
     def get_line(self, line_no=None):
-        return unicode(self._get_block(line_no).text())
+        return str(self._get_block(line_no).text())
 
 
     def indent_line(self, line_no, indent_length):
@@ -87,7 +87,7 @@ class RopeEditorWrapper(object):
         if indent_length:
             cursor.movePosition(
                 QTextCursor.StartOfBlock, QTextCursor.MoveAnchor)
-            line = unicode(cursor.block().text())
+            line = str(cursor.block().text())
             if len(line) and line[0] == " ":
                 cursor.movePosition(
                     QTextCursor.NextWord, QTextCursor.MoveAnchor)
@@ -161,7 +161,7 @@ class EditorView(QPlainTextEdit):
             block = block.previous()
             row -= 1
         while row < line_no:
-            block = block.next()
+            block = next(block)
             row += 1
         cursor = QTextCursor(block)
         self.setTextCursor(cursor)
@@ -178,7 +178,7 @@ class EditorView(QPlainTextEdit):
         block = cursor.block()
         while block.isValid():
             last_block = block
-            block = block.next()
+            block = next(block)
         cursor.setPosition(last_block.position())
         cursor.movePosition(
                 QTextCursor.EndOfBlock, QTextCursor.MoveAnchor)
@@ -263,7 +263,7 @@ class EditorView(QPlainTextEdit):
 
     def backspace_pressed(self):
         cursor = self.textCursor()
-        text = unicode(cursor.block().text())
+        text = str(cursor.block().text())
         col = cursor.columnNumber()
         if col > 0 and text[:col].strip() == "":
             self.indenter.deindent(self.textCursor().blockNumber())
@@ -273,9 +273,9 @@ class EditorView(QPlainTextEdit):
     def autocomplete_pressed(self):
         try:
             items = code_assist(self.prj,
-                                unicode(self.toPlainText()),
+                                str(self.toPlainText()),
                                 self.textCursor().position())
-        except Exception,  e:
+        except Exception as  e:
             items = []
         if items:
             self.autocomplete.setItems(items)
@@ -398,7 +398,7 @@ class EditorSidebar(QWidget):
             x = w - fm.width(txt)
             p.drawText(x, y, txt)
             row += 1
-            block = block.next()
+            block = next(block)
         p.end()
 
 
@@ -432,7 +432,7 @@ class EditorWidget(QFrame):
         return self.view.document().isModified()
 
     def toPlainText(self):
-        return unicode(self.view.document().toPlainText())
+        return str(self.view.document().toPlainText())
 
     def setModified(self, flag):
         self.view.document().setModified(flag)

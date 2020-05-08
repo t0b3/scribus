@@ -34,8 +34,8 @@ problem for veusz documents
 
 import parser
 import inspect, compiler.ast
-import thread, time
-import __builtin__
+import _thread, time
+import builtins
 import os.path
 
 #import numpy as N
@@ -273,10 +273,10 @@ class SafeEvalVisitor(object):
 
     def trace(self, node):
         "Debugging utility for tracing the validation of AST nodes."
-        print classname(node)
+        print(classname(node))
         for attr in dir(node):
             if attr[:2] != '__':
-                print ' ' * 4, "%-15.15s" % attr, getattr(node, attr)
+                print(' ' * 4, "%-15.15s" % attr, getattr(node, attr))
 
 ##########################################################################
 # Veusz evaluation functions
@@ -320,7 +320,7 @@ def checkCode(code):
     
     try:
         ast = compiler.parse(code)
-    except SyntaxError, e:
+    except SyntaxError as e:
         return [e]
     checker = SafeEvalVisitor()
 
@@ -391,16 +391,16 @@ def exec_timed(code, context, timeout_secs):
     
     def alarm(secs):
         def wait(secs):
-            for n in xrange(timeout_secs):
+            for n in range(timeout_secs):
                 time.sleep(1)
                 if signal_finished: break
             else:
-                thread.interrupt_main()
-        thread.start_new_thread(wait, (secs,))
+                _thread.interrupt_main()
+        _thread.start_new_thread(wait, (secs,))
 
     try:
         alarm(timeout_secs)
-        exec code in context
+        exec(code, context)
         signal_finished = True
     except KeyboardInterrupt:
         raise SafeEvalTimeoutException(timeout_secs)

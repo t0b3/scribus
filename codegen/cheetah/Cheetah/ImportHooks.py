@@ -12,7 +12,7 @@ To use these:
 import sys
 import os.path
 import types
-import __builtin__
+import builtins
 import imp
 from threading import RLock
 import string
@@ -104,10 +104,10 @@ def install(templateFileExtensions=('.tmpl',)):
     global _installed
     if not _installed:
         CheetahDirOwner.templateFileExtensions = templateFileExtensions
-        import __builtin__
-        if isinstance(__builtin__.__import__, types.BuiltinFunctionType):
+        import builtins
+        if isinstance(builtins.__import__, types.BuiltinFunctionType):
             global __oldimport__
-            __oldimport__ = __builtin__.__import__
+            __oldimport__ = builtins.__import__
             ImportManager._globalOwnerTypes.insert(0, CheetahDirOwner)
             #ImportManager._globalOwnerTypes.append(CheetahDirOwner)            
             global _manager
@@ -119,9 +119,9 @@ def uninstall():
     """Uninstall the Cheetah Import Hooks"""    
     global _installed
     if not _installed:
-        import __builtin__
-        if isinstance(__builtin__.__import__, types.MethodType):
-            __builtin__.__import__ = __oldimport__
+        import builtins
+        if isinstance(builtins.__import__, types.MethodType):
+            builtins.__import__ = __oldimport__
             global _manager
             del _manager
 

@@ -112,7 +112,7 @@ dictionaries to make it easier for users to customise.
 
 import sys
 import os
-import cPickle
+import pickle
 
 
 showPreviewPanel = 1 # change to 0 to permanently hide the preview
@@ -122,16 +122,16 @@ CONFIG_PATH = os.path.join(os.path.expanduser('~'), '.scribus/fontsampler')
 
 try:
     import scribus
-except ImportError,err:
-    print 'This Python script is written for the Scribus scripting interface.'
-    print 'It can only be run from within Scribus.'
+except ImportError as err:
+    print('This Python script is written for the Scribus scripting interface.')
+    print('It can only be run from within Scribus.')
     sys.exit(1)
 
 
 try:
-    from Tkinter import *
-except ImportError,err:
-    print 'This script will not work without Tkinter'
+    from tkinter import *
+except ImportError as err:
+    print('This script will not work without Tkinter')
     scribus.messageBox('Error','This script will not work without Tkinter\nPlease install and try again',
                     scribus.ICON_WARNING)
     sys.exit(1)
@@ -139,43 +139,43 @@ except ImportError,err:
 
 if not os.path.exists(CONFIG_PATH):
     try:
-        print 'Attempting to creating configuration file directory...'
+        print('Attempting to creating configuration file directory...')
         os.mkdir(CONFIG_PATH)
-        print 'Success, now testing for write access of new directory...'
+        print('Success, now testing for write access of new directory...')
         if os.access(CONFIG_PATH, os.W_OK):
-            print 'Write access ok.'
+            print('Write access ok.')
         else:
-            print 'Error, unable to write to .scribus/fontsampler directory.'
+            print('Error, unable to write to .scribus/fontsampler directory.')
     except:
         CONFIG_PATH = ''
-        print 'Failed to make configuration file directory,'
-        print 'do you have a .scribus directory in your home directory?'
-        print 'font sampler will not be able to save your preferences'
+        print('Failed to make configuration file directory,')
+        print('do you have a .scribus directory in your home directory?')
+        print('font sampler will not be able to save your preferences')
 
 
 try:
     from PIL import Image
-except ImportError,err:
-    print 'You need to install Python Imaging Library (PIL).'
-    print 'If using gentoo then you need to emerge /dev-python/imaging'
-    print 'If using an RPM based linux distribution then you add python-imaging or similar.'
-    print 'Script will continue without the font preview panel.'
+except ImportError as err:
+    print('You need to install Python Imaging Library (PIL).')
+    print('If using gentoo then you need to emerge /dev-python/imaging')
+    print('If using an RPM based linux distribution then you add python-imaging or similar.')
+    print('Script will continue without the font preview panel.')
     showPreviewPanel = 0
 
 
 try:
     from PIL import ImageTk
-except ImportError,err:
-    print 'Module ImageTk not found, font preview disabled'
+except ImportError as err:
+    print('Module ImageTk not found, font preview disabled')
     showPreviewPanel = 0
 
 
 if showPreviewPanel:
     if not os.path.exists(TEMP_PATH):
-        print '.scribus folder not found, disabling font preview panel'
+        print('.scribus folder not found, disabling font preview panel')
         showPreviewPanel = 0
     if not os.access(TEMP_PATH, os.W_OK):
-        print 'Unable to write to .scribus folder, disabling font preview panel'
+        print('Unable to write to .scribus folder, disabling font preview panel')
         showPreviewPanel = 0
 
 
@@ -369,7 +369,7 @@ def set_font_fixed(fontList):
         for j in fontList:
             errorList = errorList + j + '\n'
         errorMessage ='No suitable fixed width font found.\nPlease install at least one of these fixed width fonts:\n'+errorList
-        print errorMessage
+        print(errorMessage)
         raise Exception(errorMessage)
 
 
@@ -391,7 +391,7 @@ def set_font_proportional(fontList):
         for j in fontList:
             errorList = errorList + j + '\n'
         errorMessage = 'No suitable proportional font found.\nPlease install at least one of these proportional fonts:\n'+errorList
-        print errorMessage
+        print(errorMessage)
         raise Exception(errorMessage)
 
 
@@ -406,23 +406,23 @@ def save_user_conf(path):
                 'a' : defaultPrefs,
                 'b' : userPrefs
             }
-            cPickle.dump(data, file)
+            pickle.dump(data, file)
             file.close()
         except:
-            print 'failed to save data'
+            print('failed to save data')
 
 
 def restore_user_conf(path):
     """Restore the data from the save file on the path specified by CONFIG_PATH."""
     try:
         file = open(os.path.join(path,'fontsampler.conf'), 'r')
-        data = cPickle.load(file)
+        data = pickle.load(file)
         file.close()
         defaultPrefs.update(data['a'])
         userPrefs.update(data['b'])
     except:
         userPrefs.update(defaultPrefs)
-        print 'failed to load saved data so using default values defined in the script'
+        print('failed to load saved data so using default values defined in the script')
 
 
 def set_page_geometry(dD, geometriesList, paperSize, wantBindingOffset):
@@ -464,7 +464,7 @@ def set_page_geometry(dD, geometriesList, paperSize, wantBindingOffset):
         return result
     except:
         errorMessage = 'set_page_geometry() failure: %s' % sys.exc_info()[1]
-        print errorMessage
+        print(errorMessage)
 
 
 def set_odd_even(pageNum):

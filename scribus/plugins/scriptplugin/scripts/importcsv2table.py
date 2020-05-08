@@ -64,7 +64,7 @@ Modifications: Gregory Pittman
 please report bugs to: scribusscript@sebastianstetter.de
 """
 
-from __future__ import division
+
 import sys
 
 try:

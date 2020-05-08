@@ -51,9 +51,9 @@ existing correct doublequotes.
 """
 import scribus
 
-non_breaking_space = u"\u00a0"
-non_breaking_thin_space = u"\u202f"
-thin_space = u"\u2009"
+non_breaking_space = "\u00a0"
+non_breaking_thin_space = "\u202f"
+thin_space = "\u2009"
 
 def est_espace(text):
     return (text == ' ') or (text == non_breaking_space) or (text == non_breaking_thin_space)   or (text == thin_space)
@@ -64,75 +64,75 @@ if scribus.haveDoc() <= 0:
 
 lang = scribus.valueDialog("Language", 'Choose language or country\n(fr) Choisissez la langue du texte ou le pays :\naf, be, ch, cs, de, de-g, en, es, et, fi, fr,\n hu, is, lt, mk, nl, pl, ru, se, sk, sl, sq and uk', 'fr')
 if (lang == 'en'):
-    ouvrant_double = u"\u201c" #lead_double
-    fermant_double = u"\u201d" #follow_double
-    lead_single = u"\u2018"
-    follow_single = u"\u2019"
+    ouvrant_double = "\u201c" #lead_double
+    fermant_double = "\u201d" #follow_double
+    lead_single = "\u2018"
+    follow_single = "\u2019"
 elif (lang == 'de'):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201c"
-    lead_single = u"\u2019"
-    follow_single = u"\u201a"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201c"
+    lead_single = "\u2019"
+    follow_single = "\u201a"
 elif (lang == 'de-g'):          # German with inverted guillemets for double quote
-    ouvrant_double = u"\u00bb"
-    fermant_double = u"\u00ab"
-    lead_single = u"\u2019"
-    follow_single = u"\u201a"
+    ouvrant_double = "\u00bb"
+    fermant_double = "\u00ab"
+    lead_single = "\u2019"
+    follow_single = "\u201a"
 elif (lang == 'fr'):
-    ouvrant_double = u"\u00ab"  #  &laquo; LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
-    fermant_double = u"\u00bb"  #  &raquo; LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
-    lead_single = u"\u2018"     # RIGHT SINGLE QUOTATION MARK
-    follow_single = u"\u2019"   # LEFT SINGLE QUOTATION MARK
+    ouvrant_double = "\u00ab"  #  &laquo; LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+    fermant_double = "\u00bb"  #  &raquo; LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+    lead_single = "\u2018"     # RIGHT SINGLE QUOTATION MARK
+    follow_single = "\u2019"   # LEFT SINGLE QUOTATION MARK
 elif (lang == 'pl'):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201d"
-    lead_single = u"\u201a"
-    follow_single = u"\u2019"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201d"
+    lead_single = "\u201a"
+    follow_single = "\u2019"
 elif ((lang == 'se') or (lang == 'fi')):
-    ouvrant_double = u"\u201d"
-    fermant_double = u"\u201d"
-    lead_single = u"\u2019"
-    follow_single = u"\u2019"
+    ouvrant_double = "\u201d"
+    fermant_double = "\u201d"
+    lead_single = "\u2019"
+    follow_single = "\u2019"
 elif (lang == 'af'):
-    ouvrant_double = u"\u201c"
-    fermant_double = u"\u201d"
-    lead_single = u"\u2018"
-    follow_single = u"\u2019"
+    ouvrant_double = "\u201c"
+    fermant_double = "\u201d"
+    lead_single = "\u2018"
+    follow_single = "\u2019"
 elif (lang == 'sq'):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201c"
-    lead_single = u"\u2018"
-    follow_single = u"\u2019"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201c"
+    lead_single = "\u2018"
+    follow_single = "\u2019"
 elif ((lang == 'be') or (lang == 'ch') or (lang == 'uk') or (lang == 'ru')):
-    ouvrant_double = u"\u00ab"
-    fermant_double = u"\u00bb"
-    lead_single = u"\u2039"
-    follow_single = u"\u203a"
+    ouvrant_double = "\u00ab"
+    fermant_double = "\u00bb"
+    lead_single = "\u2039"
+    follow_single = "\u203a"
 elif (lang == 'uk'):
-    ouvrant_double = u"\u00ab"
-    fermant_double = u"\u00bb"
-    lead_single = u"\u2039"
-    follow_single = u"\u203a"
+    ouvrant_double = "\u00ab"
+    fermant_double = "\u00bb"
+    lead_single = "\u2039"
+    follow_single = "\u203a"
 elif (lang == 'es'):
-    ouvrant_double = u"\u00ab"
-    fermant_double = u"\u00bb"
-    lead_single = u"\u2018"
-    follow_double = u"\u2019"
+    ouvrant_double = "\u00ab"
+    fermant_double = "\u00bb"
+    lead_single = "\u2018"
+    follow_double = "\u2019"
 elif ((lang == 'lt') or (lang == 'is') or (lang == 'sk') or (lang == 'sl') or (lang == 'cs') or (lang == 'et')):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201c"
-    lead_single = u"\u201a"
-    follow_single = u"\u2018"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201c"
+    lead_single = "\u201a"
+    follow_single = "\u2018"
 elif (lang == 'mk'):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201c"
-    lead_single = u"\u2019"
-    follow_single = u"\u2018"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201c"
+    lead_single = "\u2019"
+    follow_single = "\u2018"
 elif ((lang == 'hu') or (lang == 'nl')):
-    ouvrant_double = u"\u201e"
-    fermant_double = u"\u201d"
-    lead_single = u"\u00bb"
-    follow_single = u"\u00ab"
+    ouvrant_double = "\u201e"
+    fermant_double = "\u201d"
+    lead_single = "\u00bb"
+    follow_single = "\u00ab"
 else:
     scribus.messageBox('Language Error', 'You need to choose an available language', scribus.ICON_WARNING, scribus.BUTTON_OK)
     sys.exit(2)

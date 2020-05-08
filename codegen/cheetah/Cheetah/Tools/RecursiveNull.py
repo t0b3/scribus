@@ -17,7 +17,7 @@ class RecursiveNull(object):
         return ''
     def __repr__(self):
         return ''
-    def __nonzero__(self):
+    def __bool__(self):
         return 0
     def __eq__(self, x):
         if x:

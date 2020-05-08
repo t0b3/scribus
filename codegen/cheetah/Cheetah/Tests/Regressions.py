@@ -29,8 +29,8 @@ class GetAttrTest(unittest.TestCase):
     def test_ValidException(self):
         o = CustomGetAttrClass()
         try:
-            print(o.attr)
-        except GetAttrException, e:
+            print((o.attr))
+        except GetAttrException as e:
             # expected
             return
         except:
@@ -47,7 +47,7 @@ class GetAttrTest(unittest.TestCase):
         template = template(searchList=[{'obj' : CustomGetAttrClass()}])
         assert template, 'We should have a valid template object by now'
 
-        self.failUnlessRaises(GetAttrException, template.raiseme)
+        self.assertRaises(GetAttrException, template.raiseme)
 
 
 class InlineImportTest(unittest.TestCase):
@@ -97,7 +97,7 @@ class InlineImportTest(unittest.TestCase):
                 
             This should totally $fail
         '''
-        self.failUnlessRaises(ImportError, Cheetah.Template.Template.compile, template, compilerSettings={'useLegacyImportMode' : False}, keepRefToGeneratedCode=True)
+        self.assertRaises(ImportError, Cheetah.Template.Template.compile, template, compilerSettings={'useLegacyImportMode' : False}, keepRefToGeneratedCode=True)
 
     def test_AutoImporting(self):
         template = '''
@@ -105,7 +105,7 @@ class InlineImportTest(unittest.TestCase):
 
             Boo!
         '''
-        self.failUnlessRaises(ImportError, Cheetah.Template.Template.compile, template)
+        self.assertRaises(ImportError, Cheetah.Template.Template.compile, template)
 
     def test_StuffBeforeImport_Legacy(self):
         template = '''
@@ -115,7 +115,7 @@ class InlineImportTest(unittest.TestCase):
 #extends Foo
 Bar
 '''
-        self.failUnlessRaises(ImportError, Cheetah.Template.Template.compile, template, compilerSettings={'useLegacyImportMode' : True}, keepRefToGeneratedCode=True)
+        self.assertRaises(ImportError, Cheetah.Template.Template.compile, template, compilerSettings={'useLegacyImportMode' : True}, keepRefToGeneratedCode=True)
 
 
 class Mantis_Issue_11_Regression_Test(unittest.TestCase):
@@ -134,7 +134,7 @@ class Mantis_Issue_11_Regression_Test(unittest.TestCase):
         import cgi
         template = Cheetah.Template.Template("$escape($request)", searchList=[{'escape' : cgi.escape, 'request' : 'foobar'}])
         assert template
-        self.failUnlessRaises(AttributeError, template.respond)
+        self.assertRaises(AttributeError, template.respond)
 
 
     def test_FailingBehaviorWithSetting(self):

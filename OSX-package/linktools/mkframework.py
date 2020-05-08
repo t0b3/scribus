@@ -6,7 +6,7 @@ import shutil
 import osxtools
 
 def usage():
-	print """
+	print("""
  Usage: mkframework.py bundle [-l libfile] [-v version]
  
 	Creates the directory structure for a framework.
@@ -17,7 +17,7 @@ def usage():
 	-l lib:	copy lib into the bundle. 
 	-v ver:	use "ver" as the version instead of the standard 'A'
 	-f:     overwrite existing files if version exists
-	"""
+	""")
 
 
 if len(sys.argv) <= 1 or sys.argv[1] == "-?" :
@@ -50,19 +50,19 @@ while argp < len(sys.argv) :
 		version = (sys.argv[argp][2:])
 		argp = argp + 1
 	elif  sys.argv[argp][0:1] == '-' :
-		print "Error: unknown option: " + sys.argv[argp]
+		print("Error: unknown option: " + sys.argv[argp])
 		usage()
 		sys.exit(1)
 	elif bundle == None:
 		bundle = sys.argv[argp]
 		argp = argp + 1
 	else:
-		print "Error: more than one bundle path specified!"
+		print("Error: more than one bundle path specified!")
 		usage()
 		sys.exit(1)
 
 if bundle == None:	
-	print "Error: no bundle path specified!"
+	print("Error: no bundle path specified!")
 	usage()
 	sys.exit(1)
 
@@ -74,9 +74,9 @@ if bundle[-10 : ] != ".framework":
 fwName = os.path.basename(bundle)[0: -10]
 	
 if not os.path.exists(bundle):
-	os.makedirs(bundle, 0755)
+	os.makedirs(bundle, 0o755)
 elif not os.path.isdir(bundle):
-	print "Error: '" + bundle + "' is no bundle path!"
+	print("Error: '" + bundle + "' is no bundle path!")
 	usage()
 	sys.exit(1)
 
@@ -86,11 +86,11 @@ if os.path.exists(versionPath):
 	if overwrite:
 		shutil.removetree(versionPath)
 	else:
-		print "Error: '" + versionPath + "' already exists!"
+		print("Error: '" + versionPath + "' already exists!")
 		usage()
 		sys.exit(1)
 
-os.makedirs(versionPath, 0755)
+os.makedirs(versionPath, 0o755)
 
 if libfile != None:
 	shutil.copy(libfile, os.path.join(versionPath, fwName))

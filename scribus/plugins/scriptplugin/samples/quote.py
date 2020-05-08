@@ -17,8 +17,8 @@ TITLE = "Text quoting"
 
 # These need to be declared as unicode strings until some
 # charset issues in the scripter are worked out.
-QUOTE_START = u""
-QUOTE_END = u""
+QUOTE_START = ""
+QUOTE_END = ""
 
 def quote(textobj):
     quoted_re = re.compile('"[^"]*"')

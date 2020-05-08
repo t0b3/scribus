@@ -43,7 +43,7 @@ class HTMLDocs:
         return ' '.join(ws)
 
     def parseFile(self, fname):
-        print fname
+        print(fname)
         f = open(os.path.join(self.path, fname), 'r')
         key = ''
         doc = []
@@ -108,10 +108,10 @@ class CPPDocs:
                 ws = tmp.split()
                 tmp = ' '.join(ws)
                 self.currentDocs[i[0]] = tmp
-            except NameError, e:
+            except NameError as e:
                 self.currentDocs[i[0]] = e
             except:
-                print 'Unhandled exception for: ', i[0]
+                print('Unhandled exception for: ', i[0])
                 traceback.print_exc(file=sys.stdout)
 
 
@@ -160,7 +160,7 @@ def getHTMLDocs(name, doc):
 
 
 
-print 'START'
+print('START')
 
 h = HTMLDocs()
 c = CPPDocs()
@@ -187,9 +187,9 @@ cur.execute('create table cpp (name varchar(30), doc text)')
 cur.execute('create table html (name varchar(30), doc text)')
 
 for i in c.currentDocs:
-    cur.execute('insert into cpp values (?, ?)', (unicode(i), unicode(c.currentDocs[i])))
+    cur.execute('insert into cpp values (?, ?)', (str(i), str(c.currentDocs[i])))
 for i in h.docs:
-    cur.execute('insert into html values (?, ?)', (unicode(i), unicode(h.docs[i])))
+    cur.execute('insert into html values (?, ?)', (str(i), str(h.docs[i])))
 
 conn.commit()
 
@@ -220,11 +220,11 @@ for i in cur.execute('select c.name, h.name from cpp as c, html as h where c.nam
     out.append('<tr><td>' + i[0] + '</td><td>' + i[1] + '</td></tr>\n')
 out.append('</table>')
 
-print 'FINISHING...'
+print('FINISHING...')
 
 conn.close()
 f = open('scribus-docs-check.html', 'w')
 f.write(''.join(out))
 f.close()
 
-print 'END'
+print('END')

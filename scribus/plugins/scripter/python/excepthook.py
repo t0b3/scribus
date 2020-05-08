@@ -32,7 +32,7 @@ def show_current_error(title=None):
     Call this function to show the current error.
     It can be used inside an except-block.
     """
-    dlg = ExceptHookDialog(sys.exc_type, sys.exc_value, sys.exc_traceback, title)
+    dlg = ExceptHookDialog(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2], title)
     dlg.show()
     dlg.exec_()
 
@@ -84,12 +84,12 @@ if __name__ == "__main__":
     # Some tests:
     app = QApplication(sys.argv)
     install()
-    print "Triggering error 1"
+    print("Triggering error 1")
     try:
         fail = 1 / 0
     except:
         show_current_error("Using inside except")
-    print "Triggering error 2"
+    print("Triggering error 2")
     fail2 = 1 / 0
-    print "This will never be reached because excepthook"
-    print "complains about fail2"
+    print("This will never be reached because excepthook")
+    print("complains about fail2")

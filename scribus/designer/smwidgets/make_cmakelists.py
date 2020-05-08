@@ -58,4 +58,4 @@ for i in src:
 	out.append(template % i.upper())
 out.append('ENDIF(APPLE)')
 
-print ''.join(out)
+print(''.join(out))

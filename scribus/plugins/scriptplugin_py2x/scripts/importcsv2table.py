@@ -64,7 +64,7 @@ Modifications: Gregory Pittman
 please report bugs to: scribusscript@sebastianstetter.de
 """
 
-from __future__ import division
+
 import sys
 
 try:
@@ -72,9 +72,9 @@ try:
     # Do so _after_ the 'import scribus' and only import the names you need, such
     # as commonly used constants.
     import scribus
-except ImportError,err:
-    print "This Python script is written for the Scribus scripting interface."
-    print "It can only be run from within Scribus."
+except ImportError as err:
+    print("This Python script is written for the Scribus scripting interface.")
+    print("It can only be run from within Scribus.")
     sys.exit(1)
 
 #########################
@@ -110,7 +110,7 @@ def getCSVdata():
                     rowlist.append(col)
                 datalist.append(rowlist)
             return datalist
-        except Exception,  e:
+        except Exception as  e:
             scribus.messageBox("csv2table", "Could not open file %s"%e)
     else:
         sys.exit

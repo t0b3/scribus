@@ -1,12 +1,12 @@
 import sys
 import os.path
 import copy as copyModule
-from ConfigParser import ConfigParser 
+from configparser import ConfigParser 
 import re
 from tokenize import Intnumber, Floatnumber, Number
 import types
 import time
-from StringIO import StringIO # not cStringIO because of unicode support
+from io import StringIO # not cStringIO because of unicode support
 import imp                 # used by SettingsManager.updateSettingsFromPySrcFile()
 
 
@@ -28,7 +28,7 @@ def mergeNestedDictionaries(dict1, dict2, copy=False, deepcopy=False):
     elif deepcopy:
         dict1 = copyModule.deepcopy(dict1)
         
-    for key, val in dict2.iteritems():
+    for key, val in dict2.items():
         if key in dict1 and isinstance(val, dict) and isinstance(dict1[key], dict):
             dict1[key] = mergeNestedDictionaries(dict1[key], val)
         else:
@@ -88,7 +88,7 @@ class _SettingsCollector(object):
         """
         S = {}
         attrs = vars(mod)
-        for k, v in attrs.iteritems():
+        for k, v in attrs.items():
             if (ignoreUnderscored and k.startswith('_')):
                 continue
             else:

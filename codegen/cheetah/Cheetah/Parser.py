@@ -332,7 +332,7 @@ class ArgList(object):
         self.arguments.append(name)
         self.defaults.append(None)
 
-    def next(self):
+    def __next__(self):
         self.count += 1
 
     def add_default(self, token):
@@ -342,7 +342,7 @@ class ArgList(object):
         self.defaults[count] += token
     
     def merge(self):
-        defaults = (isinstance(d, basestring) and d.strip() or None for d in self.defaults)
+        defaults = (isinstance(d, str) and d.strip() or None for d in self.defaults)
         return list(map(None, (a.strip() for a in self.arguments), defaults))
     
     def __str__(self):
@@ -1053,7 +1053,7 @@ class _LowLevelParser(SourceReader):
                 onDefVal = True
                 self.advance()
             elif c == ",":
-                argList.next()
+                next(argList)
                 onDefVal = False
                 self.advance()
             elif self.startswith(self.cheetahVarStartToken) and not onDefVal:
@@ -1363,7 +1363,7 @@ class _HighLevelParser(_LowLevelParser):
     
     def _initDirectives(self):
         def normalizeParserVal(val):
-            if isinstance(val, (str, unicode)):
+            if isinstance(val, str):
                 handler = getattr(self, val)
             elif isinstance(val, type):
                 handler = val(self)
@@ -2352,12 +2352,12 @@ class _HighLevelParser(_LowLevelParser):
         kwArgs['src'] = srcBlock
 
         if isinstance(macro, types.MethodType):
-            co = macro.im_func.func_code
+            co = macro.__func__.__code__
         elif (hasattr(macro, '__call__')
               and hasattr(macro.__call__, 'im_func')):
-            co = macro.__call__.im_func.func_code
+            co = macro.__call__.__func__.__code__
         else:
-            co = macro.func_code
+            co = macro.__code__
         availableKwArgs = inspect.getargs(co)[0]
         
         if 'parser' in availableKwArgs:

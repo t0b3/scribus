@@ -27,13 +27,13 @@ class Filter(object):
             Pass Unicode strings through unmolested, unless an encoding is specified.
         '''
         if val is None:
-            return u''
-        if isinstance(val, unicode):
+            return ''
+        if isinstance(val, str):
             # ignore the encoding and return the unicode object
             return val
         else:
             try:
-                return unicode(val)
+                return str(val)
             except UnicodeDecodeError:
                 # we could put more fallbacks here, but we'll just pass the str
                 # on and let DummyTransaction worry about it
@@ -96,7 +96,7 @@ class CodeHighlighter(EncodeUnicode):
             from pygments import highlight
             from pygments import lexers
             from pygments import formatters
-        except ImportError, ex:
+        except ImportError as ex:
             print('<%s> - Failed to import pygments! (%s)' % (self.__class__.__name__, ex))
             print('-- You may need to install it from: http://pygments.org')
             return encoded

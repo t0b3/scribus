@@ -41,7 +41,7 @@ def main(args):
     else: 
         force = False
     if len(args) != 2:
-        print >>sys.stderr, "Please give a name for a new api module"
+        print("Please give a name for a new api module", file=sys.stderr)
         sys.exit(1)
     for name in args[1:]:
         if is_camelcase(name):
@@ -49,7 +49,7 @@ def main(args):
         for filename in ["api_example.h", "api_example.cpp"]:
             target = replace_variations(filename, name)
             if os.path.exists(target):
-                print "%r already exists, aborting. Force overwrite with -f" % target
+                print("%r already exists, aborting. Force overwrite with -f" % target)
                 sys.exit(1)
             data = open(filename).read()
             targetdata = replace_variations(data, name)
@@ -64,7 +64,7 @@ def main(args):
                 modify("scripterimpl.cpp",
                   "new PreferencesAPI();",
                   "new PreferencesAPI();\n    new %sAPI();" % to_camelcase(name))
-            print target, "created and added to CMakeLists.txt and scripterimpl.{h,cpp}"
+            print(target, "created and added to CMakeLists.txt and scripterimpl.{h,cpp}")
 
     
         

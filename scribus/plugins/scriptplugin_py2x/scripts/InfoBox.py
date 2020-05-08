@@ -60,8 +60,8 @@ but this can be changed.
 try:
     import scribus
 except ImportError:
-    print "Unable to import the 'scribus' module. This script will only run within"
-    print "the Python interpreter embedded in Scribus. Try Script->Execute Script."
+    print("Unable to import the 'scribus' module. This script will only run within")
+    print("the Python interpreter embedded in Scribus. Try Script->Execute Script.")
     sys.exit(1)
 
 def main(argv):

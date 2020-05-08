@@ -6,7 +6,7 @@ Look at run_filename for details.
 """
 import os
 import hashlib
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 import sip
 from PyQt4.QtCore import QThread, QObject, QVariant
@@ -57,7 +57,7 @@ class RuntimeConfig(ConfigParser):
         elif value and value in ["false", "off", "no", "0"]:
             return False
         else:
-            raise ValueError, "Invalid boolean value %r" % value
+            raise ValueError("Invalid boolean value %r" % value)
 
 
 runtime_config = RuntimeConfig()
@@ -79,11 +79,11 @@ def qts_func_decorator(func):
         (fargs, fvarargs, fvarkw, fdefaults) = getargspec(func)
         if len(fargs) and fargs[0] == "self":
             args.append(context.thisObject())
-        for i in xrange(context.argumentCount()):
+        for i in range(context.argumentCount()):
             args.append(context.argument(i))
         try:
             result = func(*args)
-        except Exception, e:
+        except Exception as e:
             # XXX correct behaviour?
             # http://lists.trolltech.com/qt-interest/2007-06/thread00892-0.html
             return context.throwValue(QScriptValue(engine, str(e)))
@@ -177,7 +177,7 @@ def check_python(filename):
         elif ok == 1: # allow but now remember
             pass
         else:
-            raise ValueError, "Inknown return code for permission dialog: %r" % ok
+            raise ValueError("Inknown return code for permission dialog: %r" % ok)
     return True
 
 
@@ -191,7 +191,7 @@ def run_python(filename, subroutine=None, extension=False):
         namespace = extension_namespace
     if not check_python(filename):
         return
-    execfile(filename, namespace)
+    exec(compile(open(filename, "rb").read(), filename, 'exec'), namespace)
     if subroutine:
         sub = namespace[subroutine]
         sub()
@@ -244,7 +244,7 @@ def cleanup():
         if v and v.toBool() == True:
             #print "Keeping", child
             continue
-        print "* deleting collected", child
+        print("* deleting collected", child)
         sip.delete(child)
 
 

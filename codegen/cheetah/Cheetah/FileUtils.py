@@ -222,11 +222,11 @@ class FindAndReplace:
                  recordResults=True):
 
         
-        if isinstance(patternOrRE, basestring):
+        if isinstance(patternOrRE, str):
             self._regex = re.compile(patternOrRE)
         else:
             self._regex = patternOrRE
-        if isinstance(replacement, basestring):
+        if isinstance(replacement, str):
             self._subber = _GenSubberFunc(replacement).subberFunc()
         else:
             self._subber = replacement

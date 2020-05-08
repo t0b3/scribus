@@ -20,14 +20,14 @@ def findDependencies(exeFiles, exePath):
 	done = [x.Location for x in exeFiles]
 	while len(todo) > 0:
 		current = todo.pop()
-		print "getting dependencies for " + current.Location
+		print("getting dependencies for " + current.Location)
 		for dep in current.getDependencies():
 			if dep.Link not in result:
 				if dep.findLocation(exePath):
 					result[dep.Link] = dep
 					# check if we need to traverse the referenced lib
 					if not dep.isSystem() and dep.Location not in done:
-						print "- adding " + dep.Location
+						print("- adding " + dep.Location)
 						done.append(dep.Location)
 						todo.append(MachO.Executable(dep.Location, "lib"))
 				else:
@@ -52,7 +52,7 @@ def ingest(bundle, exceptions=[], strippedFrameworks=[]):
 	for exe in executables:
 		if pat.match(exe.Kind):
 			exePath = os.path.dirname(exe.Location)
-			print "using @executable_path=" + exePath
+			print("using @executable_path=" + exePath)
 			break
 	# step 2: find all dependencies
 	fixes = findDependencies(executables, exePath)
@@ -61,7 +61,7 @@ def ingest(bundle, exceptions=[], strippedFrameworks=[]):
 	frameworks = os.path.join(bundle, "Contents/Frameworks")
 	if not os.path.exists(frameworks):
 		log.append(">> mkdir " + frameworks)
-		os.makedirs(frameworks, 0755)
+		os.makedirs(frameworks, 0o755)
 	for k,fix in fixes.items():
 		if fix.Location in exceptions or fix.Link in exceptions:
 			del fixes[k]
@@ -75,10 +75,10 @@ def ingest(bundle, exceptions=[], strippedFrameworks=[]):
 		aspelldestpath = os.path.join(bundle, "Contents/share/aspell")
 		if not os.path.exists(aspelldestpath):
 			log.append(">> mkdir " + aspelldestpath)
-			os.makedirs(aspelldestpath, 0755)      
+			os.makedirs(aspelldestpath, 0o755)      
 		if os.path.exists(aspelldestpath):
 			log.append(">> copying aspell dictionaries")
-			print "copying aspell dictionaries"
+			print("copying aspell dictionaries")
 			copy_tree(aspellsrcpath, aspelldestpath)
 
 	# step 4: fix all executables
@@ -95,9 +95,9 @@ def ingest(bundle, exceptions=[], strippedFrameworks=[]):
 def createSymlinks(bundle, links):
 	currDir = os.getcwd()
 	for lnk,tar in links:
-		print "chdir to " + os.path.join(bundle, os.path.dirname(lnk))
+		print("chdir to " + os.path.join(bundle, os.path.dirname(lnk)))
 		os.chdir(os.path.join(bundle, os.path.dirname(lnk)))
-		print "symlink " + os.path.basename(lnk) + " -> " + tar
+		print("symlink " + os.path.basename(lnk) + " -> " + tar)
 		os.symlink(tar, os.path.basename(lnk))
 	os.chdir(currDir)
 	
